@@ -173,7 +173,6 @@ body {
 .team:hover {
   animation: pulse;
   animation-duration: 0.5s;
-  box-shadow: 0 0 3px 3px rgba(219, 48, 48, 0.2);
 }
 .team > img {
   padding-right: 5px;
@@ -257,7 +256,7 @@ body {
 }
 
 .blank {
-  opacity: 0;
+  opacity: 0.45;
 }
 
 
