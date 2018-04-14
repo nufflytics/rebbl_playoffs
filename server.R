@@ -34,6 +34,14 @@ shinyServer(function(input, output) {
   
   l <- readRDS("data/ladders.rds")
   
+  tdiff <- as.integer(lubridate::ymd_hms(file.info("data/ladders.rds")$mtime) - lubridate::now()) + 1
+  
+  if(tdiff<2) {tdiff = paste0(tdiff, " hour")}
+  
+  if(tdiff>1) {tdiff = paste0(tdiff, " hours")}
+  
+  output$tdiff <- renderUI(p(style = "font-size:30%; letter-spacing: 2px;", paste("Positions updated", tdiff, "ago")))
+  
   team <- function(pos, team) {
     if(is.null(team)) {return(tags$li(class = glue("team team-{pos}"), HTML("&nbsp;")))}
     
