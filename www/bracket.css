@@ -250,7 +250,7 @@ body {
   text-align: center; 
   margin: 60px auto;
   background: #000;
-  
+  border-radius: 50px;
 }
 .final {
   margin: 4.5em 0;
