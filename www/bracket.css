@@ -59,7 +59,7 @@ body {
 #bracket {
   overflow:hidden;
   /*background-color: #e1e1e1;*/
-  background-color:rgba(225,225,225,0.8);
+  background-color:rgba(225,225,225,0.75);
   padding-top: 20px;
   font-size: 12px;
   #xpadding: 40px 0;
