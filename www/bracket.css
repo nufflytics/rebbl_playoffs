@@ -246,9 +246,10 @@ body {
   
 }
 .share-wrap {
-  max-width: 1100px; 
+  max-width: 150px; 
   text-align: center; 
   margin: 60px auto;
+  background: #000;
   
 }
 .final {
