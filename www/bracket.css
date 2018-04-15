@@ -5,8 +5,8 @@ body {
   min-height: 100%;
   margin: 0;
   background: url("http://www.nufflytics.com/img/main/REBBL.png") no-repeat #000;
-  background-position-y:  90vh;
-  background-size: 100%;
+  background-position-y:  400px;
+  background-size: contain;
 }
 .hero {
   position:relative; 
