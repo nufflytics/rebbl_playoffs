@@ -249,7 +249,7 @@ shinyServer(function(input, output) {
             matchup(class = "blank"), # BigOD1 Bye
             matchup(
               l$REL$D3[1,],
-              l$BigO$D3[1,]
+              l$BigO$D3[2,]
             ),
             matchup(
               l$Gman$D1[4,],
