@@ -149,6 +149,18 @@ body {
   vertical-align: middle;
   
 }
+
+.split-one .matchup.mid {
+  border-bottom: 1px solid #b6b6b6;
+  padding-right: 15px;
+}
+
+.split-two .matchup.mid {
+  border-bottom: 1px solid #b6b6b6;
+  padding-left: 15px;
+  margin-left: -15px;
+}
+
 .score {
   font-size: 12px;
 /* text-transform: uppercase; */
@@ -253,8 +265,9 @@ body {
   border-radius: 50px;
 }
 .final {
+  position:relative;
+  top: -2.1em;
   margin: 4.5em 0;
-  
 }
 
 .blank {
