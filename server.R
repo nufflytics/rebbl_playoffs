@@ -34,7 +34,7 @@ shinyServer(function(input, output) {
   
   l <- readRDS("data/ladders.rds")
   
-  tdiff <- difftime(lubridate::now(tz = "Australia/Sydney"),lubridate::ymd_hms(file.info("data/ladders.rds")$mtime, tz = "Australia/Sydney"), units = "mins") %>% as.integer()
+  tdiff <- as.integer(difftime(lubridate::now(tz = "Australia/Sydney"),lubridate::ymd_hms(file.info("data/ladders.rds")$mtime, tz = "Australia/Sydney"), units = "mins"))
   
   if(tdiff<2) {tdiff = paste0(tdiff, " minute")}
   
