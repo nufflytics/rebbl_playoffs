@@ -109,8 +109,8 @@ shinyServer(function(input, output) {
               l$REL$D9E[1,]
             ),
             matchup(class = "mid",
-              l$BigO$D1[2,],
-              l$Gman$D6B[1,]
+                    l$BigO$D1[2,],
+                    l$Gman$D6B[1,]
             ),
             matchup(
               l$REL$D2[3,],
@@ -273,7 +273,17 @@ shinyServer(function(input, output) {
             ),
             tags$ul(class ="matchup mid",
                     team("top", l$REL$D5[1,]),
-                    custom_team("bottom", "Minors Champion")
+                    #custom_team("bottom", "Minors Champion")
+                    a(
+                      "data-tooltip" = "Street Sharkss",
+                      tags$li(
+                        class =  "team team-bottom",
+                        img(src = "img/liz.png", height = 25),
+                        img(src = "http://images.bb2.cyanide-studio.com/logos/Logo_Lizardman_09.png", height = 25),
+                        #team$name,
+                        span(class = "score", "Shadorra")
+                      )
+                    )
             ),
             matchup(class = "blank"), # BigOD1 Bye
             matchup(
