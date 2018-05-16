@@ -42,14 +42,14 @@ shinyServer(function(input, output) {
   
   output$tdiff <- renderUI(p(style = "font-size:30%; letter-spacing: 2px;", paste("Positions updated", tdiff, "ago")))
   
-  team <- function(pos, team) {
+  team <- function(pos, team, locked = F) {
     if(is.null(team)) {return(tags$li(class = glue("team team-{pos}"), HTML("&nbsp;")))}
     
     a(href = glue("http://bb2leaguemanager.com/Leaderboard/team_detail.php?team_id={team$id}&community_id=10"),
       target="_blank",
       "data-tooltip" = team$name,
       tags$li(
-        class =  glue("team team-{pos}"),
+        class =  glue("team team-{pos}{ifelse(locked, ' locked', '')}"),
         img(src = glue("img/{race_img(team$race)}"), height = 25),
         img(src = glue("http://images.bb2.cyanide-studio.com/logos/Logo_{team$logo}.png"), height = 25),
         #team$name,
@@ -66,10 +66,10 @@ shinyServer(function(input, output) {
     )
   }
   
-  matchup <- function(team1 = NULL, team2=NULL, class = NULL) {
+  matchup <- function(team1 = NULL, team2=NULL, class = NULL, locked = c(F,F)) {
     tags$ul(class = paste("matchup", class),
-            team("top", team1),
-            team("bottom", team2)
+            team("top", team1, locked[[1]]),
+            team("bottom", team2, locked[[2]])
     )
   }
   
@@ -86,11 +86,13 @@ shinyServer(function(input, output) {
             matchup(class = "blank"), # RELD1 Bye
             matchup(
               l$Gman$D3[1,],
-              l$REL$D6[2,]
+              l$REL$D6[2,],
+              locked = c(T,F)
             ),
             matchup(
               l$BigO$D1[4,],
-              l$Gman$D6A[1,]
+              l$Gman$D6A[1,],
+              locked = c(F,T)
             ),
             tags$ul(class = "matchup",
                     team("top", l$REL$D4[1,]),
@@ -106,11 +108,13 @@ shinyServer(function(input, output) {
             ),
             matchup(
               l$BigO$D2[1,],
-              l$REL$D9E[1,]
+              l$REL$D9E[1,],
+              locked = c(T,F)
             ),
             matchup(class = "mid",
                     l$BigO$D1[2,],
-                    l$Gman$D6B[1,]
+                    l$Gman$D6B[1,],
+                    locked = c(F,T)
             ),
             matchup(
               l$REL$D2[3,],
@@ -122,11 +126,13 @@ shinyServer(function(input, output) {
             ),
             matchup(
               l$REL$D5[2,],
-              l$BigO$D2[2,]
+              l$BigO$D2[2,],
+              locked = c(F,T)
             ),
             matchup(
               l$REL$D6[1,],
-              l$Gman$D4[2,]
+              l$Gman$D4[2,],
+              locked = c(T,F)
             ),
             matchup(
               l$BigO$D1[3,],
@@ -147,7 +153,8 @@ shinyServer(function(input, output) {
             div(class = "round-details", "Round 2", br(), span(class = "date", "Starts May 30")),
             matchup(
               l$REL$D1[1,],
-              NULL
+              NULL,
+              locked = c(T,F)
             ),
             matchup(),
             matchup(),
@@ -157,7 +164,8 @@ shinyServer(function(input, output) {
             matchup(),
             matchup(
               NULL,
-              l$Gman$D1[1,]
+              l$Gman$D1[1,],
+              locked = c(F,T)
             )
           ),
           div(
@@ -245,11 +253,13 @@ shinyServer(function(input, output) {
             div(class = "round-details", "Round 1", br(), span(class = "date", "Starts May 23")),
             matchup(
               l$REL$D1[2,],
-              l$BigO$D4A[1,]
+              l$BigO$D4A[1,],
+              locked = c(F,T)
             ),
             matchup(
               l$REL$D7[1,],
-              l$Gman$D3[2,]
+              l$Gman$D3[2,],
+              locked = c(T,F)
             ),
             matchup(
               l$Gman$D1[5,],
@@ -277,7 +287,7 @@ shinyServer(function(input, output) {
                     a(
                       "data-tooltip" = "Street Sharkss",
                       tags$li(
-                        class =  "team team-bottom",
+                        class =  "team team-bottom locked",
                         img(src = "img/liz.png", height = 25),
                         img(src = "http://images.bb2.cyanide-studio.com/logos/Logo_Lizardman_09.png", height = 25),
                         #team$name,
@@ -296,11 +306,13 @@ shinyServer(function(input, output) {
             ),
             matchup(
               l$REL$D2[1,],
-              l$Gman$D6D[1,]
+              l$Gman$D6D[1,],
+              locked=c(F,T)
             ),
             matchup(
               l$Gman$D1[3,],
-              l$REL$D9B[1,]
+              l$REL$D9B[1,],
+              locked = c(F,T)
             ),
             matchup(
               l$REL$D8[2,],
