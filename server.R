@@ -279,12 +279,14 @@ shinyServer(function(input, output) {
             ),
             matchup(
               l$BigO$D1[5,],
-              l$REL$D3[3,]
+              l$REL$D3[3,],
+              locked = c(T,F)
             ),
             tags$ul(class ="matchup mid",
                     team("top", l$REL$D5[1,]),
                     #custom_team("bottom", "Minors Champion")
-                    a(
+                    a(href = "https://cdn.discordapp.com/attachments/446844052302987284/446844075136778251/unknown.png",
+                      target = "_blank",
                       "data-tooltip" = "Street Sharkss",
                       tags$li(
                         class =  "team team-bottom locked",
