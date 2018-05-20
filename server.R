@@ -96,11 +96,23 @@ shinyServer(function(input, output) {
             ),
             tags$ul(class = "matchup",
                     team("top", l$REL$D4[1,]),
-                    custom_team("bottom", "Best Stunty")
+                    a(href = "http://www.bb2leaguemanager.com/Leaderboard/team_detail.php?team_id=1953913&community_id=10",
+                      target = "_blank",
+                      "data-tooltip" = "GADS Gobstoppers",
+                      tags$li(
+                        class =  "team team-bottom locked",
+                        img(src = "img/gobbo.png", height = 25),
+                        img(src = "http://images.bb2.cyanide-studio.com/logos/Logo_Goblin_03.png", height = 25),
+                        #team$name,
+                        span(class = "score", "Ravenpoe")
+                      )
+                    ),
+                    locked = c(F,T)
             ),
             matchup(
               l$Gman$D3[3,],
-              l$REL$D1[5,]
+              l$REL$D1[5,],
+              locked = c(F,T)
             ),
             matchup(
               l$Gman$D2[1,],
@@ -122,7 +134,8 @@ shinyServer(function(input, output) {
             ),
             matchup(
               l$BigO$D4B[1,],
-              l$REL$D1[3,]
+              l$REL$D1[3,],
+              locked = c(F,T)
             ),
             matchup(
               l$REL$D5[2,],
@@ -189,7 +202,7 @@ shinyServer(function(input, output) {
             class = "semis-l",
             div(
               class = "round-details",
-              "SF #1",
+              "Top Half SF",
               br(),
               span(class = "date", "Starts June 20")
             ),
@@ -210,7 +223,7 @@ shinyServer(function(input, output) {
             class = "semis-r",
             div(
               class = "round-details",
-              "SF #2",
+              "Bottom Half SF",
               br(),
               span(class = "date", "Starts June 20")
             ),
@@ -254,7 +267,7 @@ shinyServer(function(input, output) {
             matchup(
               l$REL$D1[2,],
               l$BigO$D4A[1,],
-              locked = c(F,T)
+              locked = c(T,T)
             ),
             matchup(
               l$REL$D7[1,],
@@ -326,7 +339,8 @@ shinyServer(function(input, output) {
             ),
             matchup(
               l$REL$D1[4,],
-              l$Gman$D6E[1,]
+              l$Gman$D6E[1,],
+              locked = c(T,F)
             )
             
           )
