@@ -95,7 +95,7 @@ shinyServer(function(input, output) {
               locked = c(F,T)
             ),
             tags$ul(class = "matchup",
-                    team("top", l$REL$D4[1,]),
+                    team("top", l$REL$D4[1,], locked = T),
                     a(href = "http://www.bb2leaguemanager.com/Leaderboard/team_detail.php?team_id=1953913&community_id=10",
                       target = "_blank",
                       "data-tooltip" = "GADS Gobstoppers",
@@ -106,8 +106,7 @@ shinyServer(function(input, output) {
                         #team$name,
                         span(class = "score", "Ravenpoe")
                       )
-                    ),
-                    locked = c(F,T)
+                    )
             ),
             matchup(
               l$Gman$D3[3,],
@@ -130,12 +129,13 @@ shinyServer(function(input, output) {
             ),
             matchup(
               l$REL$D2[3,],
-              l$REL$D3[2,]
+              l$REL$D3[2,],
+              locked = c(F,T)
             ),
             matchup(
               l$BigO$D4B[1,],
               l$REL$D1[3,],
-              locked = c(F,T)
+              locked = c(T,T)
             ),
             matchup(
               l$REL$D5[2,],
@@ -149,15 +149,18 @@ shinyServer(function(input, output) {
             ),
             matchup(
               l$BigO$D1[3,],
-              l$Gman$D6C[1,]
+              l$Gman$D6C[1,],
+              locked = c(F,T)
             ),
             matchup(
               l$REL$D2[2,],
-              l$REL$D4[3,]
+              l$REL$D4[3,],
+              locked = c(F,T)
             ),
             matchup(
               l$BigO$D3[1,],
-              l$Gman$D5[2,]
+              l$Gman$D5[2,],
+              locked = c(T,T)
             ),
             matchup(class = "blank") # GmanD1 Bye
           ),
@@ -276,11 +279,13 @@ shinyServer(function(input, output) {
             ),
             matchup(
               l$Gman$D1[5,],
-              l$BigO$D2[3,]
+              l$BigO$D2[3,],
+              locked = c(T,T)
             ),
             matchup(
               l$Gman$D5[1,],
-              l$REL$D7[2,]
+              l$REL$D7[2,],
+              locked = c(T,T)
             ),
             matchup(
               l$REL$D9D[1,],
@@ -288,15 +293,16 @@ shinyServer(function(input, output) {
             ),
             matchup(
               l$REL$D4[2,],
-              l$Gman$D2[3,]
+              l$Gman$D2[3,],
+              locked = c(T,F)
             ),
             matchup(
               l$BigO$D1[5,],
               l$REL$D3[3,],
-              locked = c(T,F)
+              locked = c(T,T)
             ),
             tags$ul(class ="matchup mid",
-                    team("top", l$REL$D5[1,]),
+                    team("top", l$REL$D5[1,], locked = T),
                     #custom_team("bottom", "Minors Champion")
                     a(href = "https://cdn.discordapp.com/attachments/446844052302987284/446844075136778251/unknown.png",
                       target = "_blank",
@@ -313,7 +319,8 @@ shinyServer(function(input, output) {
             matchup(class = "blank"), # BigOD1 Bye
             matchup(
               l$REL$D3[1,],
-              l$BigO$D3[2,]
+              l$BigO$D3[2,],
+              locked = c(T,F)
             ),
             matchup(
               l$Gman$D1[4,],
@@ -335,12 +342,13 @@ shinyServer(function(input, output) {
             ),
             matchup(
               l$Gman$D4[1,],
-              l$REL$D8[1,]
+              l$REL$D8[1,],
+              locked = c(F,T)
             ),
             matchup(
               l$REL$D1[4,],
               l$Gman$D6E[1,],
-              locked = c(T,F)
+              locked = c(T,T)
             )
             
           )
