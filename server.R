@@ -111,12 +111,12 @@ shinyServer(function(input, output) {
             matchup(
               l$Gman$D3[3,],
               l$REL$D1[5,],
-              locked = c(F,T)
+              locked = c(T,T)
             ),
             matchup(
               l$Gman$D2[1,],
               l$REL$D9C[1,],
-              locked = c(F,T)
+              locked = c(T,T)
             ),
             matchup(
               l$BigO$D2[1,],
@@ -146,7 +146,7 @@ shinyServer(function(input, output) {
             matchup(
               l$REL$D6[1,],
               l$Gman$D4[2,],
-              locked = c(T,F)
+              locked = c(T,T)
             ),
             matchup(
               l$BigO$D1[3,],
@@ -277,7 +277,7 @@ shinyServer(function(input, output) {
             matchup(
               l$REL$D7[1,],
               l$Gman$D3[2,],
-              locked = c(T,F)
+              locked = c(T,T)
             ),
             matchup(
               l$Gman$D1[5,],
@@ -292,12 +292,12 @@ shinyServer(function(input, output) {
             matchup(
               l$REL$D9D[1,],
               l$Gman$D1[2,],
-              locked = c(T,F)
+              locked = c(T,T)
             ),
             matchup(
               l$REL$D4[2,],
               l$Gman$D2[3,],
-              locked = c(T,F)
+              locked = c(T,T)
             ),
             matchup(
               l$BigO$D1[5,],
@@ -327,7 +327,8 @@ shinyServer(function(input, output) {
             ),
             matchup(
               l$Gman$D1[4,],
-              l$REL$D9A[1,]
+              l$REL$D9A[1,],
+              locked = c(T,F)
             ),
             matchup(
               l$REL$D2[1,],
@@ -337,17 +338,17 @@ shinyServer(function(input, output) {
             matchup(
               l$Gman$D1[3,],
               l$REL$D9B[1,],
-              locked = c(F,T)
+              locked = c(T,T)
             ),
             matchup(
               l$REL$D8[2,],
               l$Gman$D2[2,],
-              locked = c(T,F)
+              locked = c(T,T)
             ),
             matchup(
               l$Gman$D4[1,],
               l$REL$D8[1,],
-              locked = c(F,T)
+              locked = c(T,T)
             ),
             matchup(
               l$REL$D1[4,],
