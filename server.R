@@ -121,7 +121,7 @@ shinyServer(function(input, output) {
             matchup(
               l$BigO$D2[1,],
               l$REL$D9E[1,],
-              locked = c(T,F)
+              locked = c(T,T)
             ),
             matchup(class = "mid",
                     l$BigO$D1[2,],
@@ -131,7 +131,7 @@ shinyServer(function(input, output) {
             matchup(
               l$REL$D2[3,],
               l$REL$D3[2,],
-              locked = c(F,T)
+              locked = c(T,T)
             ),
             matchup(
               l$BigO$D4B[1,],
@@ -141,7 +141,7 @@ shinyServer(function(input, output) {
             matchup(
               l$REL$D5[2,],
               l$BigO$D2[2,],
-              locked = c(F,T)
+              locked = c(T,T)
             ),
             matchup(
               l$REL$D6[1,],
@@ -156,7 +156,7 @@ shinyServer(function(input, output) {
             matchup(
               l$REL$D2[2,],
               l$REL$D4[3,],
-              locked = c(F,T)
+              locked = c(T,T)
             ),
             matchup(
               l$BigO$D3[1,],
@@ -332,7 +332,7 @@ shinyServer(function(input, output) {
             matchup(
               l$REL$D2[1,],
               l$Gman$D6D[1,],
-              locked=c(F,T)
+              locked=c(T,T)
             ),
             matchup(
               l$Gman$D1[3,],
@@ -341,7 +341,8 @@ shinyServer(function(input, output) {
             ),
             matchup(
               l$REL$D8[2,],
-              l$Gman$D2[2,]
+              l$Gman$D2[2,],
+              locked = c(T,F)
             ),
             matchup(
               l$Gman$D4[1,],
