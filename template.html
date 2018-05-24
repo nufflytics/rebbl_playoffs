@@ -40,8 +40,9 @@
 	<script>
 	  $(document).ready(function(){
     $('#spoiler_btn').click(function(){
-       $(".spoiler").toggleClass("hidden")
-       $('#spoiler_btn').toggleClass("spoilers_shown")
+       $(".spoiler").toggleClass("hidden");
+       $(".spoiler_bg").toggleClass("no_col");
+       $('#spoiler_btn').toggleClass("spoilers_shown");
        
        if($('#spoiler_btn').hasClass("spoilers_shown")) {
          $('#spoiler_btn').html("Hide Spoilers")

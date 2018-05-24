@@ -4,6 +4,7 @@
   visibility: hidden;
 }
 
+
 body {
   font-family: 'Istok Web', sans-serif;
   min-height: 100%;
@@ -413,9 +414,14 @@ li.team.winner {
   text-decoration: none;
   display: inline-block;
   margin-bottom: 0.5em;
+  cursor: pointer;
 }
 
 .btn:hover {
   background: #db5050;
   text-decoration: none;
+}
+
+.no_col {
+  background: #fff !important;
 }

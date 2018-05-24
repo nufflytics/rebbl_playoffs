@@ -42,11 +42,11 @@ team <- function(pos, team, winner = F, score = "") {
     target="_blank",
     "data-tooltip" = team$name,
     tags$li(
-      class =  glue("team team-{pos}{ifelse(winner, ' winner', '')}"),
+      class =  glue("team team-{pos}{ifelse(winner, ' winner', '')} spoiler_bg no_col"),
       img(src = glue("img/{race_img(team$race)}"), height = 25),
       img(src = glue("http://images.bb2.cyanide-studio.com/logos/Logo_{team$logo}.png"), height = 25),
       team$name.1,
-      span(class = "score", score)
+      span(class = "score spoiler hidden", score)
     )
   )
 }
@@ -62,7 +62,7 @@ custom_team <- function(pos, name, img = NULL) {
 matchup <- function(team1 = NULL, team2=NULL, class = NULL, match_result = NULL) {
   winning_coach = winner(match_result)
   
-  tags$ul(class = paste("matchup", class , ifelse(is_empty(match_result), '', "spoiler hidden")),
+  tags$ul(class = paste("matchup", class),
           team("top", team1, team1$name.1 == winning_coach, score = score(match_result, team1$name.1) ),
           team("bottom", team2, team2$name.1 == winning_coach, score = score(match_result, team2$name.1) )
   )
@@ -104,6 +104,8 @@ coach_list <- list(
   c("Luminous","Hoyleyboy")
 )
 
+
+
   l <- readRDS("data/ladders.rds")
   all_coaches <- l %>% map_df(~map_df(.,~head(.) %>% bind_rows))
   
@@ -131,6 +133,33 @@ shinyServer(function(input, output, session) {
   
   ro64 <- reactive({
     map(coach_list, function(coaches) {keep(playoff_data(), ~(all(coaches %in% .$coach)))} )
+  })
+  
+  ro32_coaches <- reactive({list(
+    #top left
+    c("Horney Cricket", winner(ro64()[[1]])),
+    c(winner(ro64()[[2]]), winner(ro64()[[3]])),
+    c(winner(ro64()[[4]]), winner(ro64()[[5]])),
+    c(winner(ro64()[[6]]), winner(ro64()[[7]])),
+    #bottom left
+    c(winner(ro64()[[8]]), winner(ro64()[[9]])),
+    c(winner(ro64()[[10]]), winner(ro64()[[11]])),
+    c(winner(ro64()[[12]]), winner(ro64()[[13]])),
+    c(winner(ro64()[[14]]), "Gerbear"),
+    #top right
+    c(winner(ro64()[[15]]), winner(ro64()[[16]])),
+    c(winner(ro64()[[17]]), winner(ro64()[[18]])),
+    c(winner(ro64()[[19]]), winner(ro64()[[20]])),
+    c(winner(ro64()[[21]]), winner(ro64()[[22]])),
+    #bottom right
+    c("PapaNasty", winner(ro64()[[23]])),
+    c(winner(ro64()[[24]]), winner(ro64()[[25]])),
+    c(winner(ro64()[[26]]), winner(ro64()[[27]])),
+    c(winner(ro64()[[27]]), winner(ro64()[[28]]))
+  )})
+  
+  ro32 <- reactive({
+    map(ro32_coaches(), function(coaches) {if(length(coaches != 2)) return(NULL) ;keep(playoff_data(), ~(all(coaches %in% .$coach)))} )
   })
   
   output$bracket <- renderUI({
@@ -230,36 +259,44 @@ shinyServer(function(input, output, session) {
             div(class = "round-details", "Round 2", br(), span(class = "date", "Starts May 30")),
             matchup(
               l$REL$D1[1,],
-              team_details(winner(ro64()[[1]]))
+              team_details(winner(ro64()[[1]])),
+              match_result = ro32()[[1]]
               
             ),
             matchup(
               team_details(winner(ro64()[[2]])),
-              team_details(winner(ro64()[[3]]))
+              team_details(winner(ro64()[[3]])),
+              match_result = ro32()[[2]]
               ),
             matchup(
               team_details(winner(ro64()[[4]])),
-              team_details(winner(ro64()[[5]]))
+              team_details(winner(ro64()[[5]])),
+              match_result = ro32()[[3]]
             ),
             matchup(class = "mid",
                     team_details(winner(ro64()[[6]])),
-                    team_details(winner(ro64()[[7]]))
+                    team_details(winner(ro64()[[7]])),
+                    match_result = ro32()[[4]]
                     ),
             matchup(
               team_details(winner(ro64()[[8]])),
-              team_details(winner(ro64()[[9]]))
+              team_details(winner(ro64()[[9]])),
+              match_result = ro32()[[5]]
             ),
             matchup(
               team_details(winner(ro64()[[10]])),
-              team_details(winner(ro64()[[11]]))
+              team_details(winner(ro64()[[11]])),
+              match_result = ro32()[[6]]
             ),
             matchup(
               team_details(winner(ro64()[[12]])),
-              team_details(winner(ro64()[[13]]))
+              team_details(winner(ro64()[[13]])),
+              match_result = ro32()[[7]]
             ),
             matchup(
               team_details(winner(ro64()[[14]])),
-              l$Gman$D1[1,]
+              l$Gman$D1[1,],
+              match_result = ro32()[[8]]
             )
           ),
           div(
@@ -332,35 +369,43 @@ shinyServer(function(input, output, session) {
             div(class = "round-details", "Round 2", br(), span(class = "date", "Starts May 30")),
             matchup(
               team_details(winner(ro64()[[15]])),
-              team_details(winner(ro64()[[16]]))
+              team_details(winner(ro64()[[16]])),
+              match_result = ro32()[[9]]
             ),
             matchup(
               team_details(winner(ro64()[[17]])),
-              team_details(winner(ro64()[[18]]))
+              team_details(winner(ro64()[[18]])),
+              match_result = ro32()[[10]]
             ),
             matchup(
               team_details(winner(ro64()[[19]])),
-              team_details(winner(ro64()[[20]]))
+              team_details(winner(ro64()[[20]])),
+              match_result = ro32()[[11]]
               ),
             matchup(class = "mid",
                     team_details(winner(ro64()[[21]])),
-                    team_details(winner(ro64()[[22]]))
+                    team_details(winner(ro64()[[22]])),
+                    match_result = ro32()[[12]]
                     ),
             matchup(
               l$BigO$D1[1,],
-              team_details(winner(ro64()[[23]]))
+              team_details(winner(ro64()[[23]])),
+              match_result = ro32()[[13]]
             ),
             matchup(
               team_details(winner(ro64()[[24]])),
-              team_details(winner(ro64()[[25]]))
+              team_details(winner(ro64()[[25]])),
+              match_result = ro32()[[14]]
             ),
             matchup(
               team_details(winner(ro64()[[26]])),
-              team_details(winner(ro64()[[27]]))
+              team_details(winner(ro64()[[27]])),
+              match_result = ro32()[[15]]
             ),
             matchup(
               team_details(winner(ro64()[[28]])),
-              team_details(winner(ro64()[[29]]))
+              team_details(winner(ro64()[[29]])),
+              match_result = ro32()[[16]]
             )
           ),
           div(
