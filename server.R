@@ -62,7 +62,7 @@ custom_team <- function(pos, name, img = NULL) {
 matchup <- function(team1 = NULL, team2=NULL, class = NULL, match_result = NULL) {
   winning_coach = winner(match_result)
   
-  tags$ul(class = paste("matchup", class),
+  tags$ul(class = paste("matchup", class , ifelse(is_empty(match_result), '', "spoiler")),
           team("top", team1, team1$name.1 == winning_coach, score = score(match_result, team1$name.1) ),
           team("bottom", team2, team2$name.1 == winning_coach, score = score(match_result, team2$name.1) )
   )
@@ -226,7 +226,7 @@ shinyServer(function(input, output, session) {
             matchup(class = "blank") # GmanD1 Bye
           ),
           div(
-            class = "round round-two",
+            class = "round round-two spoiler",
             div(class = "round-details", "Round 2", br(), span(class = "date", "Starts May 30")),
             matchup(
               l$REL$D1[1,],
@@ -263,7 +263,7 @@ shinyServer(function(input, output, session) {
             )
           ),
           div(
-            class = "round round-three",
+            class = "round round-three ",
             div(class = "round-details", "Round 3", br(), span(class = "date", "Starts June 6")),
             matchup(),
             matchup(class = "mid"),
@@ -271,14 +271,14 @@ shinyServer(function(input, output, session) {
             matchup()
           ),
           div(
-            class = "round round-four",
+            class = "round round-four ",
             div(class = "round-details", "Hype Video Round", br(), span(class = "date", "Starts June 13")),
             matchup(class = "mid"),
             matchup()
           )
         ),
         div(
-          class = "champion",
+          class = "champion ",
           div(
             class = "semis-l",
             div(
@@ -314,13 +314,13 @@ shinyServer(function(input, output, session) {
         div(
           class = "split split-two",
           div(
-            class = "round round-four",
+            class = "round round-four ",
             div(class = "round-details", "Hype Video Round", br(), span(class = "date", "Starts June 13")),
             matchup(class = "mid"),
             matchup()
           ),
           div(
-            class = "round round-three",
+            class = "round round-three ",
             div(class = "round-details", "Round 3", br(), span(class = "date", "Starts June 6")),
             matchup(),
             matchup(class = "mid"),
@@ -328,7 +328,7 @@ shinyServer(function(input, output, session) {
             matchup()
           ),
           div(
-            class = "round round-two",
+            class = "round round-two spoiler",
             div(class = "round-details", "Round 2", br(), span(class = "date", "Starts May 30")),
             matchup(
               team_details(winner(ro64()[[15]])),

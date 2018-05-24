@@ -1,11 +1,15 @@
 /* Lightly edited version of https://codepen.io/jbeason/pen/Wbaedb */
 
+.spoiler {
+  visibility: hidden;
+}
+
 body {
   font-family: 'Istok Web', sans-serif;
   min-height: 100%;
   margin: 0;
   background: url("http://www.nufflytics.com/img/main/REBBL.png") no-repeat #000;
-  background-position-y:  400px;
+  background-position-y:  450px;
   background-size: contain;
 }
 .hero {
@@ -163,6 +167,7 @@ body {
 
 .score {
   font-size: 14px;
+  font-weight: 500;
   font-family: "Bungee Inline", sans-serif;
 /* text-transform: uppercase; */
   color: #222; 
@@ -394,4 +399,23 @@ li.team.winner {
 
 *[data-tooltip]:hover::after {
     opacity: 1;
+}
+
+.btn {
+  -webkit-border-radius: 15;
+  -moz-border-radius: 15;
+  border-radius: 15px;
+  font-family: "Istok Web";
+  color: #ffffff;
+  font-size: 20px;
+  background: #db3030;
+  padding: 10px 20px 10px 20px;
+  text-decoration: none;
+  display: inline-block;
+  margin-bottom: 0.5em;
+}
+
+.btn:hover {
+  background: #db5050;
+  text-decoration: none;
 }
