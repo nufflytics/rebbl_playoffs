@@ -162,12 +162,11 @@ body {
 }
 
 .score {
-  font-size: 12px;
+  font-size: 14px;
+  font-family: "Bungee Inline", sans-serif;
 /* text-transform: uppercase; */
+  color: #222; 
   float: right;
-  color: #2C7399;
-  font-weight: bold;
-  font-family: 'Roboto Condensed', sans-serif;
   position: absolute;
   right: 5px;
   
@@ -181,6 +180,9 @@ body {
   overflow: hidden;
   position: relative;
   display: flex;
+  font-weight: bold;
+  font-family: 'Roboto Condensed', sans-serif;
+  color: #2C7399;
 }
 
 .team:hover {
@@ -274,7 +276,7 @@ body {
   opacity: 0.45;
 }
 
-li.team.locked {
+li.team.winner {
   background-color: #dfffdf;
 }
 

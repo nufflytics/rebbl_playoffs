@@ -10,8 +10,7 @@ library(shiny)
 shinyUI(
   shiny::htmlTemplate(
     "template.html",
-    bracket = uiOutput("bracket"),
-    tdiff = uiOutput("tdiff")
+    bracket = uiOutput("bracket")
     )
   
 )
