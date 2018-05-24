@@ -25,7 +25,7 @@
 		 <h1 id="headline">Superbowl</h1>
 		 <p class="year"><i class="fa fa-star"></i>Season 8<i class="fa fa-star"></i></p>
      <p>Path to the championship</p>
-     <a class="btn" id="spoiler_btn">Show Spoilers</a>
+     <a class="btn" id="spoiler_btn">Toggle Spoilers</a>
    </div>
 	</header>
 
@@ -42,13 +42,6 @@
     $('#spoiler_btn').click(function(){
        $(".spoiler").toggleClass("hidden");
        $(".spoiler_bg").toggleClass("no_col");
-       $('#spoiler_btn').toggleClass("spoilers_shown");
-       
-       if($('#spoiler_btn').hasClass("spoilers_shown")) {
-         $('#spoiler_btn').html("Hide Spoilers")
-       } else {
-         $('#spoiler_btn').html("Show Spoilers")
-       }
     });
   });
 	</script>
