@@ -40,7 +40,14 @@
 	<script>
 	  $(document).ready(function(){
     $('#spoiler_btn').click(function(){
-       $(".spoiler").removeClass("spoiler")
+       $(".spoiler").toggleClass("hidden")
+       $('#spoiler_btn').toggleClass("spoilers_shown")
+       
+       if($('#spoiler_btn').hasClass("spoilers_shown")) {
+         $('#spoiler_btn').html("Hide Spoilers")
+       } else {
+         $('#spoiler_btn').html("Show Spoilers")
+       }
     });
   });
 	</script>
