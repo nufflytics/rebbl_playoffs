@@ -407,9 +407,9 @@ li.team.winner {
   border-radius: 15px;
   font-family: "Istok Web";
   color: #ffffff;
-  font-size: 20px;
+  font-size: 1em;
   background: #db3030;
-  padding: 10px 20px 10px 20px;
+  padding: 5px 10px 5px 10px;
   text-decoration: none;
   display: inline-block;
   margin-bottom: 0.5em;
