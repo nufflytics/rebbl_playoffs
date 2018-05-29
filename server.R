@@ -31,6 +31,16 @@ race_img <- function(race_id) {
   )
 }
 
+regions <- read_csv("~/Dropbox/BB/REBBL/Fantasy League/REBBL_fantasy/data/S8_regions.csv")
+
+find_region<- function(team) {
+  r = filter(regions, Team == team)
+  
+  if(nrow(r)==0) {return(NULL)}
+  
+  r$Region
+}
+
 team <- function(pos, team, winner = F, score = "") {
   if(is_empty(winner)) {
     winner  = F
@@ -43,8 +53,9 @@ team <- function(pos, team, winner = F, score = "") {
     "data-tooltip" = team$name,
     tags$li(
       class =  glue("team team-{pos}{ifelse(winner, ' winner', '')} spoiler_bg no_col"),
+      img(src = glue("http://nufflytics.com/img/main/{find_region(team$name)}_s.png"), height = 25),
       img(src = glue("img/{race_img(team$race)}"), height = 25),
-      img(src = glue("http://images.bb2.cyanide-studio.com/logos/Logo_{team$logo}.png"), height = 25),
+      #img(src = glue("http://images.bb2.cyanide-studio.com/logos/Logo_{team$logo}.png"), height = 25),
       team$name.1,
       span(class = "score spoiler hidden", score)
     )
