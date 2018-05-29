@@ -246,7 +246,7 @@ shinyServer(function(input, output, session) {
               match_result = ro64()[[2]]
             ),
             tags$ul(class = "matchup",
-                    team("top", l$REL$D4[1,]),
+                    team("top", l$REL$D4[1,], winner = T, score = 2),
                     a(href = "http://www.bb2leaguemanager.com/Leaderboard/team_detail.php?team_id=1953913&community_id=10",
                       target = "_blank",
                       "data-tooltip" = "GADS Gobstoppers",
@@ -255,7 +255,7 @@ shinyServer(function(input, output, session) {
                         img(src = "http://nufflytics.com/img/main/REL_s.png", height = 25),
                         img(src = "img/gobbo.png", height = 25),
                         "Ravenpoe",
-                        span(class = "score", "")
+                        span(class = "score spoiler hidden", "0")
                       )
                     )
             ),
