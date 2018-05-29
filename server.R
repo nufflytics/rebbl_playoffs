@@ -252,8 +252,8 @@ shinyServer(function(input, output, session) {
                       "data-tooltip" = "GADS Gobstoppers",
                       tags$li(
                         class =  "team team-bottom",
+                        img(src = "http://nufflytics.com/img/main/REL_s.png", height = 25),
                         img(src = "img/gobbo.png", height = 25),
-                        img(src = "http://images.bb2.cyanide-studio.com/logos/Logo_Goblin_03.png", height = 25),
                         "Ravenpoe",
                         span(class = "score", "")
                       )
@@ -576,8 +576,8 @@ shinyServer(function(input, output, session) {
                       "data-tooltip" = "Street Sharkss",
                       tags$li(
                         class =  "team team-bottom",
+                        img(src = "http://nufflytics.com/img/main/REBBL_fist_mod.png", height = 25),
                         img(src = "img/liz.png", height = 25),
-                        img(src = "http://images.bb2.cyanide-studio.com/logos/Logo_Lizardman_09.png", height = 25),
                         "Shadorra",
                         span(class = "score", "")
                       )
