@@ -9,9 +9,7 @@ body {
   font-family: 'Istok Web', sans-serif;
   min-height: 100%;
   margin: 0;
-  background: url("http://www.nufflytics.com/img/main/REBBL.png") no-repeat #000;
-  background-position-y:  450px;
-  background-size: contain;
+  background: #000;
 }
 .hero {
   position:relative; 
@@ -424,4 +422,10 @@ li.team.winner {
 
 .no_col {
   background: #fff !important;
+}
+
+#bracket-holder {
+  background: url("http://www.nufflytics.com/img/main/REBBL.png") no-repeat;
+  background-position-y:  center;
+  background-size: contain;
 }
