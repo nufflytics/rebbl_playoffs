@@ -31,7 +31,7 @@ race_img <- function(race_id) {
   )
 }
 
-regions <- read_csv("~/Dropbox/BB/REBBL/Fantasy League/REBBL_fantasy/data/S8_regions.csv")
+regions <- read_csv("data/S8_regions.csv")
 
 find_region<- function(team) {
   r = filter(regions, Team == team)
