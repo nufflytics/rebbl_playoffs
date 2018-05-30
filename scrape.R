@@ -34,7 +34,8 @@ process_matches <- function(match) {
   data_frame(
     coach = match$opponents %>% map_chr(pluck,"coach","name"), 
     team  = match$opponents %>% map_chr(pluck,"team","name"), 
-    score = match$opponents %>% map_int(pluck,"team","score")
+    score = match$opponents %>% map_int(pluck,"team","score"),
+    round = match$round
   )
 }
 
@@ -44,4 +45,5 @@ matches <- map(data$upcoming_matches, process_matches)
 
 old_matches <- readRDS("data/playoff_contests.rds")
 
-if (length(old_matches) != length(matches)) saveRDS(matches, file = "data/playoff_contests.rds")
+#if (length(old_matches) != length(matches)) 
+saveRDS(matches, file = "data/playoff_contests.rds")
