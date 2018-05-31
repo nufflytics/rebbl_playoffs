@@ -75,8 +75,11 @@ custom_team <- function(pos, name, img = NULL) {
 matchup <- function(team1 = NULL, team2=NULL, class = NULL, match_result = NULL) {
   winning_coach = winner(match_result)
   
-  round = match_result[[1]]$round[1]
-  if (is_empty(match_result)) round = 0
+  if (is_empty(match_result)) {
+    round = 0
+  } else {
+    round = match_result[[1]]$round[1]
+    }
   
   
   
@@ -177,41 +180,41 @@ shinyServer(function(input, output, session) {
   )})
   
   ro32 <- reactive({
-    map(ro32_coaches(), function(coaches) {if(length(coaches != 2)) return(NULL) ;keep(playoff_data(), ~(all(coaches %in% .$coach)))} )
+    map(ro32_coaches(), function(coaches) {if(length(coaches) != 2) return(NULL) ;keep(playoff_data(), ~(all(coaches %in% .$coach)))} )
   })
   
-  # ro16_coaches <- reactive({list(
-  #   #top left
-  #   c(winner(ro32()[[1]]), winner(ro32[[2]])),
-  #   c(winner(ro32()[[3]]), winner(ro32[[4]])),
-  #   #bottom left
-  #   c(winner(ro32()[[5]]), winner(ro32[[6]])),
-  #   c(winner(ro32()[[7]]), winner(ro32[[8]])),
-  #   #top right
-  #   c(winner(ro32()[[9]]), winner(ro32[[10]])),
-  #   c(winner(ro32()[[11]]), winner(ro32[[12]])),
-  #   #bottom right
-  #   c(winner(ro32()[[13]]), winner(ro32[[14]])),
-  #   c(winner(ro32()[[15]]), winner(ro32[[16]]))
-  # )})
-  # 
-  # ro16 <- reactive({
-  #   map(ro16_coaches(), function(coaches) {if(length(coaches != 2)) return(NULL) ;keep(playoff_data(), ~(all(coaches %in% .$coach)))} )
-  # })
-  # 
+  ro16_coaches <- reactive({list(
+    #top left
+    c(winner(ro32()[[1]]), winner(ro32()[[2]])),
+    c(winner(ro32()[[3]]), winner(ro32()[[4]])),
+    #bottom left
+    c(winner(ro32()[[5]]), winner(ro32()[[6]])),
+    c(winner(ro32()[[7]]), winner(ro32()[[8]])),
+    #top right
+    c(winner(ro32()[[9]]), winner(ro32()[[10]])),
+    c(winner(ro32()[[11]]), winner(ro32()[[12]])),
+    #bottom right
+    c(winner(ro32()[[13]]), winner(ro32()[[14]])),
+    c(winner(ro32()[[15]]), winner(ro32()[[16]]))
+  )})
+
+  ro16 <- reactive({
+    map(ro16_coaches(), function(coaches) {if(length(coaches) != 2) return(NULL) ;keep(playoff_data(), ~(all(coaches %in% .$coach)))} )
+  })
+
   # ro8_coaches <- reactive({list(
   #   #top left
-  #   c(winner(ro16()[[1]]), winner(ro16[[2]])),
+  #   c(winner(ro16()[[1]]), winner(ro16()[[2]])),
   #   #bottom left
-  #   c(winner(ro16()[[3]]), winner(ro16[[4]])),
+  #   c(winner(ro16()[[3]]), winner(ro16()[[4]])),
   #   #top right
-  #   c(winner(ro16()[[5]]), winner(ro16[[6]])),
+  #   c(winner(ro16()[[5]]), winner(ro16()[[6]])),
   #   #bottom right
-  #   c(winner(ro16()[[7]]), winner(ro16[[8]])),
+  #   c(winner(ro16()[[7]]), winner(ro16()[[8]])),
   # )})
   # 
   # ro8 <- reactive({
-  #   map(ro8_coaches(), function(coaches) {if(length(coaches != 2)) return(NULL) ;keep(playoff_data(), ~(all(coaches %in% .$coach)))} )
+  #   map(ro8_coaches(), function(coaches) {if(length(coaches) != 2) return(NULL) ;keep(playoff_data(), ~(all(coaches %in% .$coach)))} )
   # })
   # 
   # sf_coaches <- reactive({list(
@@ -220,7 +223,7 @@ shinyServer(function(input, output, session) {
   # )})
   # 
   # sf <- reactive({
-  #   map(sf_coaches(), function(coaches) {if(length(coaches != 2)) return(NULL) ;keep(playoff_data(), ~(all(coaches %in% .$coach)))} )
+  #   map(sf_coaches(), function(coaches) {if(length(coaches) != 2) return(NULL) ;keep(playoff_data(), ~(all(coaches %in% .$coach)))} )
   # })
   # 
   # sb_coaches <- reactive({list(
@@ -228,7 +231,7 @@ shinyServer(function(input, output, session) {
   # )})
   # 
   # sb <- reactive({
-  #   map(sb_coaches(), function(coaches) {if(length(coaches != 2)) return(NULL) ;keep(playoff_data(), ~(all(coaches %in% .$coach)))} )
+  #   map(sb_coaches(), function(coaches) {if(length(coaches) != 2) return(NULL) ;keep(playoff_data(), ~(all(coaches %in% .$coach)))} )
   # })
   
   output$bracket <- renderUI({
@@ -372,24 +375,24 @@ shinyServer(function(input, output, session) {
             class = "round round-three spoiler hidden",
             div(class = "round-details", "Round 3", br(), span(class = "date", "Starts June 6")),
             matchup(
-              # team_details(winner(ro32()[[1]])),
-              # team_details(winner(ro32()[[2]])),
-              # match_result = ro16()[[1]]
+              team_details(winner(ro32()[[1]])),
+              team_details(winner(ro32()[[2]])),
+              match_result = ro16()[[1]]
             ),
             matchup(class = "mid",
-                    # team_details(winner(ro32()[[3]])),
-                    # team_details(winner(ro32()[[4]])),
-                    # match_result = ro16()[[2]]
+                    team_details(winner(ro32()[[3]])),
+                    team_details(winner(ro32()[[4]])),
+                    match_result = ro16()[[2]]
                     ),
             matchup(
-              # team_details(winner(ro32()[[5]])),
-              # team_details(winner(ro32()[[6]])),
-              # match_result = ro16()[[3]]
+              team_details(winner(ro32()[[5]])),
+              team_details(winner(ro32()[[6]])),
+              match_result = ro16()[[3]]
             ),
             matchup(
-              # team_details(winner(ro32()[[7]])),
-              # team_details(winner(ro32()[[8]])),
-              # match_result = ro16()[[4]]
+              team_details(winner(ro32()[[7]])),
+              team_details(winner(ro32()[[8]])),
+              match_result = ro16()[[4]]
             )
           ),
           div(
@@ -473,24 +476,24 @@ shinyServer(function(input, output, session) {
             class = "round round-three spoiler hidden",
             div(class = "round-details", "Round 3", br(), span(class = "date", "Starts June 6")),
             matchup(
-              # team_details(winner(ro32()[[9]])),
-              # team_details(winner(ro32()[[10]])),
-              # match_result = ro16()[[5]]
+              team_details(winner(ro32()[[9]])),
+              team_details(winner(ro32()[[10]])),
+              match_result = ro16()[[5]]
             ),
             matchup(class = "mid",
-                    # team_details(winner(ro32()[[11]])),
-                    # team_details(winner(ro32()[[12]])),
-                    # match_result = ro16()[[6]]
+                    team_details(winner(ro32()[[11]])),
+                    team_details(winner(ro32()[[12]])),
+                    match_result = ro16()[[6]]
                     ),
             matchup(
-              # team_details(winner(ro32()[[13]])),
-              # team_details(winner(ro32()[[14]])),
-              # match_result = ro16()[[7]]
+              team_details(winner(ro32()[[13]])),
+              team_details(winner(ro32()[[14]])),
+              match_result = ro16()[[7]]
             ),
             matchup(
-              # team_details(winner(ro32()[[15]])),
-              # team_details(winner(ro32()[[16]])),
-              # match_result = ro16()[[8]]
+              team_details(winner(ro32()[[15]])),
+              team_details(winner(ro32()[[16]])),
+              match_result = ro16()[[8]]
             )
           ),
           div(

@@ -45,5 +45,4 @@ matches <- map(data$upcoming_matches, process_matches)
 
 old_matches <- readRDS("data/playoff_contests.rds")
 
-#if (length(old_matches) != length(matches)) 
-saveRDS(matches, file = "data/playoff_contests.rds")
+if (length(old_matches) != length(matches)) saveRDS(matches, file = "data/playoff_contests.rds")
