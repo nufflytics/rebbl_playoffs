@@ -41,10 +41,12 @@ find_region<- function(team) {
   r$Region
 }
 
-team <- function(pos, team, winner = F, score = "") {
+team <- function(pos, team, winner = F, score = "", round = 0) {
   if(is_empty(winner)) {
     winner  = F
   }
+  
+  spoiler = round > 1
   
   if(is.null(team)) {return(tags$li(class = glue("team team-{pos}"), HTML("&nbsp;")))}
   
@@ -52,12 +54,12 @@ team <- function(pos, team, winner = F, score = "") {
     target="_blank",
     "data-tooltip" = team$name,
     tags$li(
-      class =  glue("team team-{pos}{ifelse(winner, ' winner', '')} spoiler_bg no_col"),
+      class =  glue("team team-{pos}{ifelse(winner, ' winner', '')} {ifelse(spoiler, ' spoiler_bg no_col','')}"),
       img(src = glue("http://nufflytics.com/img/main/{find_region(team$name)}_s.png"), height = 25),
       img(src = glue("img/{race_img(team$race)}"), height = 25),
       #img(src = glue("http://images.bb2.cyanide-studio.com/logos/Logo_{team$logo}.png"), height = 25),
       team$name.1,
-      span(class = "score spoiler hidden", score)
+      span(class = glue("score {ifelse(spoiler, ' spoiler hidden','')}"), score)
     )
   )
 }
@@ -73,9 +75,14 @@ custom_team <- function(pos, name, img = NULL) {
 matchup <- function(team1 = NULL, team2=NULL, class = NULL, match_result = NULL) {
   winning_coach = winner(match_result)
   
+  round = match_result[[1]]$round[1]
+  if (is_empty(match_result)) round = 0
+  
+  
+  
   tags$ul(class = paste("matchup", class),
-          team("top", team1, team1$name.1 == winning_coach, score = score(match_result, team1$name.1) ),
-          team("bottom", team2, team2$name.1 == winning_coach, score = score(match_result, team2$name.1) )
+          team("top", team1, team1$name.1 == winning_coach, score = score(match_result, team1$name.1), round = round),
+          team("bottom", team2, team2$name.1 == winning_coach, score = score(match_result, team2$name.1), round = round )
   )
 }
 
@@ -232,7 +239,7 @@ shinyServer(function(input, output, session) {
         div(
           class = "split split-one",
           div(
-            class = "round round-one current",
+            class = "round round-one",
             div(class = "round-details", "Round 1", br(), span(class = "date", "Starts May 23")),
             matchup(class = "blank"), # RELD1 Bye
             matchup(
@@ -246,7 +253,7 @@ shinyServer(function(input, output, session) {
               match_result = ro64()[[2]]
             ),
             tags$ul(class = "matchup",
-                    team("top", l$REL$D4[1,], winner = T, score = 2),
+                    team("top", l$REL$D4[1,], winner = T, score = 2, round = 1),
                     a(href = "http://www.bb2leaguemanager.com/Leaderboard/team_detail.php?team_id=1953913&community_id=10",
                       target = "_blank",
                       "data-tooltip" = "GADS Gobstoppers",
@@ -255,7 +262,7 @@ shinyServer(function(input, output, session) {
                         img(src = "http://nufflytics.com/img/main/REL_s.png", height = 25),
                         img(src = "img/gobbo.png", height = 25),
                         "Ravenpoe",
-                        span(class = "score spoiler hidden", "0")
+                        span(class = "score", "0")
                       )
                     )
             ),
@@ -317,7 +324,7 @@ shinyServer(function(input, output, session) {
             matchup(class = "blank") # GmanD1 Bye
           ),
           div(
-            class = "round round-two spoiler hidden",
+            class = "round round-two current",
             div(class = "round-details", "Round 2", br(), span(class = "date", "Starts May 30")),
             matchup(
               l$REL$D1[1,],
@@ -362,7 +369,7 @@ shinyServer(function(input, output, session) {
             )
           ),
           div(
-            class = "round round-three ",
+            class = "round round-three spoiler hidden",
             div(class = "round-details", "Round 3", br(), span(class = "date", "Starts June 6")),
             matchup(
               # team_details(winner(ro32()[[1]])),
@@ -463,7 +470,7 @@ shinyServer(function(input, output, session) {
             )
           ),
           div(
-            class = "round round-three ",
+            class = "round round-three spoiler hidden",
             div(class = "round-details", "Round 3", br(), span(class = "date", "Starts June 6")),
             matchup(
               # team_details(winner(ro32()[[9]])),
@@ -487,7 +494,7 @@ shinyServer(function(input, output, session) {
             )
           ),
           div(
-            class = "round round-two spoiler hidden",
+            class = "round round-two current",
             div(class = "round-details", "Round 2", br(), span(class = "date", "Starts May 30")),
             matchup(
               team_details(winner(ro64()[[15]])),
@@ -531,7 +538,7 @@ shinyServer(function(input, output, session) {
             )
           ),
           div(
-            class = "round round-one current",
+            class = "round round-one",
             div(class = "round-details", "Round 1", br(), span(class = "date", "Starts May 23")),
             matchup(
               l$REL$D1[2,],

@@ -34,7 +34,8 @@ process_matches <- function(match) {
   data_frame(
     coach = match$opponents %>% map_chr(pluck,"coach","name"), 
     team  = match$opponents %>% map_chr(pluck,"team","name"), 
-    score = match$opponents %>% map_int(pluck,"team","score")
+    score = match$opponents %>% map_int(pluck,"team","score"),
+    round = match$round
   )
 }
 
