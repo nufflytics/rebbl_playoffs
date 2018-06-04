@@ -579,7 +579,7 @@ shinyServer(function(input, output, session) {
               match_result = ro64()[[21]]
             ),
             tags$ul(class ="matchup mid",
-                    team("top", l$REL$D5[1,]),
+                    team("top", l$REL$D5[1,], score = 2),
                     #custom_team("bottom", "Minors Champion")
                     a(href = "https://cdn.discordapp.com/attachments/446844052302987284/446844075136778251/unknown.png",
                       target = "_blank",
@@ -589,7 +589,7 @@ shinyServer(function(input, output, session) {
                         img(src = "http://nufflytics.com/img/main/REBBL_fist_mod.png", height = 25),
                         img(src = "img/liz.png", height = 25),
                         "Shadorra",
-                        span(class = "score", "")
+                        span(class = "score", "1")
                       )
                     )
             ),
