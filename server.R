@@ -176,7 +176,7 @@ shinyServer(function(input, output, session) {
     c("PapaNasty", winner(ro64()[[23]])),
     c(winner(ro64()[[24]]), winner(ro64()[[25]])),
     c(winner(ro64()[[26]]), winner(ro64()[[27]])),
-    c(winner(ro64()[[27]]), winner(ro64()[[28]]))
+    c(winner(ro64()[[28]]), winner(ro64()[[29]]))
   )})
   
   ro32 <- reactive({
