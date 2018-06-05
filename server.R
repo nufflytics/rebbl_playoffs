@@ -46,7 +46,7 @@ team <- function(pos, team, winner = F, score = "", round = 0) {
     winner  = F
   }
   
-  spoiler = round > 1
+  spoiler = round > 2
   
   if(is.null(team)) {return(tags$li(class = glue("team team-{pos}"), HTML("&nbsp;")))}
   
@@ -202,20 +202,20 @@ shinyServer(function(input, output, session) {
     map(ro16_coaches(), function(coaches) {if(length(coaches) != 2) return(NULL) ;keep(playoff_data(), ~(all(coaches %in% .$coach)))} )
   })
 
-  # ro8_coaches <- reactive({list(
-  #   #top left
-  #   c(winner(ro16()[[1]]), winner(ro16()[[2]])),
-  #   #bottom left
-  #   c(winner(ro16()[[3]]), winner(ro16()[[4]])),
-  #   #top right
-  #   c(winner(ro16()[[5]]), winner(ro16()[[6]])),
-  #   #bottom right
-  #   c(winner(ro16()[[7]]), winner(ro16()[[8]])),
-  # )})
-  # 
-  # ro8 <- reactive({
-  #   map(ro8_coaches(), function(coaches) {if(length(coaches) != 2) return(NULL) ;keep(playoff_data(), ~(all(coaches %in% .$coach)))} )
-  # })
+  ro8_coaches <- reactive({list(
+    #top left
+    c(winner(ro16()[[1]]), winner(ro16()[[2]])),
+    #bottom left
+    c(winner(ro16()[[3]]), winner(ro16()[[4]])),
+    #top right
+    c(winner(ro16()[[5]]), winner(ro16()[[6]])),
+    #bottom right
+    c(winner(ro16()[[7]]), winner(ro16()[[8]]))
+  )})
+
+  ro8 <- reactive({
+    map(ro8_coaches(), function(coaches) {if(length(coaches) != 2) return(NULL) ;keep(playoff_data(), ~(all(coaches %in% .$coach)))} )
+  })
   # 
   # sf_coaches <- reactive({list(
   #   c(winner(ro8()[[1]]), winner(ro8()[[2]])),
@@ -327,7 +327,7 @@ shinyServer(function(input, output, session) {
             matchup(class = "blank") # GmanD1 Bye
           ),
           div(
-            class = "round round-two current",
+            class = "round round-two",
             div(class = "round-details", "Round 2", br(), span(class = "date", "Starts May 30")),
             matchup(
               l$REL$D1[1,],
@@ -372,7 +372,7 @@ shinyServer(function(input, output, session) {
             )
           ),
           div(
-            class = "round round-three spoiler hidden",
+            class = "round round-three current",
             div(class = "round-details", "Round 3", br(), span(class = "date", "Starts June 6")),
             matchup(
               team_details(winner(ro32()[[1]])),
@@ -396,17 +396,17 @@ shinyServer(function(input, output, session) {
             )
           ),
           div(
-            class = "round round-four ",
+            class = "round round-four spoiler hidden",
             div(class = "round-details", "Hype Video Round", br(), span(class = "date", "Starts June 13")),
             matchup(class = "mid",
-                    # team_details(winner(ro16()[[1]])),
-                    # team_details(winner(ro16()[[2]])),
-                    # match_result = ro8()[[1]]
+                    team_details(winner(ro16()[[1]])),
+                    team_details(winner(ro16()[[2]])),
+                    match_result = ro8()[[1]]
                     ),
             matchup(
-              # team_details(winner(ro16()[[3]])),
-              # team_details(winner(ro16()[[4]])),
-              # match_result = ro8()[[2]]
+              team_details(winner(ro16()[[3]])),
+              team_details(winner(ro16()[[4]])),
+              match_result = ro8()[[2]]
             )
           )
         ),
@@ -459,21 +459,21 @@ shinyServer(function(input, output, session) {
         div(
           class = "split split-two",
           div(
-            class = "round round-four ",
+            class = "round round-four spoiler hidden",
             div(class = "round-details", "Hype Video Round", br(), span(class = "date", "Starts June 13")),
             matchup(class = "mid",
-                    # team_details(winner(ro16()[[5]])),
-                    # team_details(winner(ro16()[[6]])),
-                    # match_result = ro8()[[3]]
+                    team_details(winner(ro16()[[5]])),
+                    team_details(winner(ro16()[[6]])),
+                    match_result = ro8()[[3]]
                     ),
             matchup(
-              # team_details(winner(ro16()[[7]])),
-              # team_details(winner(ro16()[[8]])),
-              # match_result = ro8()[[4]]
+              team_details(winner(ro16()[[7]])),
+              team_details(winner(ro16()[[8]])),
+              match_result = ro8()[[4]]
             )
           ),
           div(
-            class = "round round-three spoiler hidden",
+            class = "round round-three current",
             div(class = "round-details", "Round 3", br(), span(class = "date", "Starts June 6")),
             matchup(
               team_details(winner(ro32()[[9]])),
