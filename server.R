@@ -497,7 +497,7 @@ shinyServer(function(input, output, session) {
             )
           ),
           div(
-            class = "round round-two current",
+            class = "round round-two",
             div(class = "round-details", "Round 2", br(), span(class = "date", "Starts May 30")),
             matchup(
               team_details(winner(ro64()[[15]])),
