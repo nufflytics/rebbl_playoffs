@@ -46,7 +46,7 @@ team <- function(pos, team, winner = F, score = "", round = 0) {
     winner  = F
   }
   
-  spoiler = round > 2
+  spoiler = round > 3
   
   if(is.null(team)) {return(tags$li(class = glue("team team-{pos}"), HTML("&nbsp;")))}
   
@@ -216,16 +216,16 @@ shinyServer(function(input, output, session) {
   ro8 <- reactive({
     map(ro8_coaches(), function(coaches) {if(length(coaches) != 2) return(NULL) ;keep(playoff_data(), ~(all(coaches %in% .$coach)))} )
   })
-  # 
-  # sf_coaches <- reactive({list(
-  #   c(winner(ro8()[[1]]), winner(ro8()[[2]])),
-  #   c(winner(ro8()[[3]]), winner(ro8()[[4]]))
-  # )})
-  # 
-  # sf <- reactive({
-  #   map(sf_coaches(), function(coaches) {if(length(coaches) != 2) return(NULL) ;keep(playoff_data(), ~(all(coaches %in% .$coach)))} )
-  # })
-  # 
+
+  sf_coaches <- reactive({list(
+    c(winner(ro8()[[1]]), winner(ro8()[[2]])),
+    c(winner(ro8()[[3]]), winner(ro8()[[4]]))
+  )})
+
+  sf <- reactive({
+    map(sf_coaches(), function(coaches) {if(length(coaches) != 2) return(NULL) ;keep(playoff_data(), ~(all(coaches %in% .$coach)))} )
+  })
+
   # sb_coaches <- reactive({list(
   #   c(winner(sf()[[1]]), winner(sf()[[2]]))
   # )})
@@ -372,7 +372,7 @@ shinyServer(function(input, output, session) {
             )
           ),
           div(
-            class = "round round-three current",
+            class = "round round-three",
             div(class = "round-details", "Round 3", br(), span(class = "date", "Starts June 6")),
             matchup(
               team_details(winner(ro32()[[1]])),
@@ -396,7 +396,7 @@ shinyServer(function(input, output, session) {
             )
           ),
           div(
-            class = "round round-four spoiler hidden",
+            class = "round round-four current",
             div(class = "round-details", "Hype Video Round", br(), span(class = "date", "Starts June 13")),
             matchup(class = "mid",
                     team_details(winner(ro16()[[1]])),
@@ -413,7 +413,7 @@ shinyServer(function(input, output, session) {
         div(
           class = "champion ",
           div(
-            class = "semis-l",
+            class = "semis-l spoiler hidden",
             div(
               class = "round-details",
               "Top Half SF",
@@ -442,7 +442,7 @@ shinyServer(function(input, output, session) {
                     )
           ),
           div(
-            class = "semis-r",
+            class = "semis-r  spoiler hidden",
             div(
               class = "round-details",
               "Bottom Half SF",
@@ -459,7 +459,7 @@ shinyServer(function(input, output, session) {
         div(
           class = "split split-two",
           div(
-            class = "round round-four spoiler hidden",
+            class = "round round-four current",
             div(class = "round-details", "Hype Video Round", br(), span(class = "date", "Starts June 13")),
             matchup(class = "mid",
                     team_details(winner(ro16()[[5]])),
@@ -473,7 +473,7 @@ shinyServer(function(input, output, session) {
             )
           ),
           div(
-            class = "round round-three current",
+            class = "round round-three",
             div(class = "round-details", "Round 3", br(), span(class = "date", "Starts June 6")),
             matchup(
               team_details(winner(ro32()[[9]])),
