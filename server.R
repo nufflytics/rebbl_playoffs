@@ -226,13 +226,13 @@ shinyServer(function(input, output, session) {
     map(sf_coaches(), function(coaches) {if(length(coaches) != 2) return(NULL) ;keep(playoff_data(), ~(all(coaches %in% .$coach)))} )
   })
 
-  # sb_coaches <- reactive({list(
-  #   c(winner(sf()[[1]]), winner(sf()[[2]]))
-  # )})
-  # 
-  # sb <- reactive({
-  #   map(sb_coaches(), function(coaches) {if(length(coaches) != 2) return(NULL) ;keep(playoff_data(), ~(all(coaches %in% .$coach)))} )
-  # })
+  sb_coaches <- reactive({list(
+    c(winner(sf()[[1]]), winner(sf()[[2]]))
+  )})
+
+  sb <- reactive({
+    map(sb_coaches(), function(coaches) {if(length(coaches) != 2) return(NULL) ;keep(playoff_data(), ~(all(coaches %in% .$coach)))} )
+  })
   
   output$bracket <- renderUI({
     tags$section(
@@ -413,7 +413,7 @@ shinyServer(function(input, output, session) {
         div(
           class = "champion ",
           div(
-            class = "semis-l spoiler hidden",
+            class = "semis-l  spoiler hidden",
             div(
               class = "round-details",
               "Top Half SF",
@@ -421,9 +421,9 @@ shinyServer(function(input, output, session) {
               span(class = "date", "Starts June 20")
             ),
             matchup(class = "championship",
-                    # team_details(winner(ro8()[[1]])),
-                    # team_details(winner(ro8()[[2]])),
-                    # match_result = sf()[[1]]
+                     team_details(winner(ro8()[[1]])),
+                     team_details(winner(ro8()[[3]])),
+                     match_result = sf()[[1]]
                     )
           ),
           div(
@@ -436,9 +436,9 @@ shinyServer(function(input, output, session) {
               span(class = "date", "Starts June 27")
             ),
             matchup(class = "championship",
-                    # team_details(winner(sf()[[1]])),
-                    # team_details(winner(sf()[[2]])),
-                    # match_result = sb()[[1]]
+                     team_details(winner(sf()[[1]])),
+                     team_details(winner(sf()[[2]])),
+                     match_result = sb()[[1]]
                     )
           ),
           div(
@@ -450,9 +450,9 @@ shinyServer(function(input, output, session) {
               span(class = "date", "Starts June 20")
             ),
             matchup(class = "championship",
-                    # team_details(winner(ro8()[[3]])),
-                    # team_details(winner(ro8()[[4]])),
-                    # match_result = sf()[[2]]
+                     team_details(winner(ro8()[[2]])),
+                     team_details(winner(ro8()[[4]])),
+                     match_result = sf()[[2]]
                     )
           )
         ),
