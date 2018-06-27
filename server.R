@@ -46,7 +46,7 @@ team <- function(pos, team, winner = F, score = "", round = 0) {
     winner  = F
   }
   
-  spoiler = round > 5 
+  spoiler = F
   
   if(is.null(team)) {return(tags$li(class = glue("team team-{pos}"), HTML("&nbsp;")))}
   
@@ -218,8 +218,8 @@ shinyServer(function(input, output, session) {
   })
 
   sf_coaches <- reactive({list(
-    c(winner(ro8()[[1]]), winner(ro8()[[2]])),
-    c(winner(ro8()[[3]]), winner(ro8()[[4]]))
+    c(winner(ro8()[[1]]), winner(ro8()[[3]])),
+    c(winner(ro8()[[2]]), winner(ro8()[[4]]))
   )})
 
   sf <- reactive({
