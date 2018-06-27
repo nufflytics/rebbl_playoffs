@@ -438,7 +438,7 @@ shinyServer(function(input, output, session) {
               class = "round-details",
               "Superbowl",
               br(),
-              span(class = "date", "Starts June 27")
+              span(class = "date", "June 28 17:00 UTC")
             ),
             matchup(class = "championship sb",
                      team_details(winner(sf()[[1]])),
