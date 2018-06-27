@@ -81,10 +81,15 @@ matchup <- function(team1 = NULL, team2=NULL, class = NULL, match_result = NULL)
     round = match_result[[1]]$round[1]
     }
   
+  trophy <- NULL
   
+  if(!is.null(class)) {
+    if(grepl("sb", class)) trophy <- img(src = "img/SB8.png", height = "120px")
+    }
   
   tags$ul(class = paste("matchup", class),
           team("top", team1, team1$name.1 == winning_coach, score = score(match_result, team1$name.1), round = round),
+          trophy,
           team("bottom", team2, team2$name.1 == winning_coach, score = score(match_result, team2$name.1), round = round )
   )
 }
@@ -428,14 +433,14 @@ shinyServer(function(input, output, session) {
           ),
           div(
             class = "final current",
-            icon("trophy"),
+            #icon("trophy"),
             div(
               class = "round-details",
               "Superbowl",
               br(),
               span(class = "date", "Starts June 27")
             ),
-            matchup(class = "championship",
+            matchup(class = "championship sb",
                      team_details(winner(sf()[[1]])),
                      team_details(winner(sf()[[2]])),
                      match_result = sb()[[1]]
