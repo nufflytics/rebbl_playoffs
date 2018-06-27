@@ -46,7 +46,7 @@ team <- function(pos, team, winner = F, score = "", round = 0) {
     winner  = F
   }
   
-  spoiler = round > 4
+  spoiler = round > 5
   
   if(is.null(team)) {return(tags$li(class = glue("team team-{pos}"), HTML("&nbsp;")))}
   
@@ -413,7 +413,7 @@ shinyServer(function(input, output, session) {
         div(
           class = "champion ",
           div(
-            class = "semis-l current",
+            class = "semis-l",
             div(
               class = "round-details",
               "Top Half SF",
@@ -427,7 +427,7 @@ shinyServer(function(input, output, session) {
                     )
           ),
           div(
-            class = "final spoiler hidden",
+            class = "final current",
             icon("trophy"),
             div(
               class = "round-details",
@@ -442,7 +442,7 @@ shinyServer(function(input, output, session) {
                     )
           ),
           div(
-            class = "semis-r current",
+            class = "semis-r ",
             div(
               class = "round-details",
               "Bottom Half SF",
