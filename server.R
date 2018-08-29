@@ -36,7 +36,7 @@ race_img <- function(race_id) {
 regions <- map_df(c("REBBL - Big O", "REBBL - Gman", "REBBL - REL"), 
                   ~{
                     teams <- api_teams(key, league = ., limit = 1000)
-                    data_frame(Team = teams$teams$team, Region = teams$meta$league$name %>% str_replace_all(c("REBBL - "="", "Big O"="BigO", "GMan"="Gman")))
+                    data_frame(Team = teams$teams$team, Region = teams$meta$league$name %>% stringr::str_replace_all(c("REBBL - "="", "Big O"="BigO", "GMan"="Gman")))
                     } 
                     )
 
@@ -63,7 +63,7 @@ team <- function(pos, team, winner = F, score = "", round = 0) {
     tags$li(
       class =  glue("team team-{pos}{ifelse(winner, ' winner', '')} {ifelse(spoiler, ' spoiler_bg no_col','')}"),
       img(src = glue("http://nufflytics.com/img/main/{find_region(team$name)}_s.png"), height = 25),
-      img(src = glue("img/{race_img(team$race)}"), height = 25),
+      img(src = glue("img/{race_img(team$race_id)}"), height = 25),
       #img(src = glue("http://images.bb2.cyanide-studio.com/logos/Logo_{team$logo}.png"), height = 25),
       team$name.1,
       span(class = glue("score {ifelse(spoiler, ' spoiler hidden','')}"), score)

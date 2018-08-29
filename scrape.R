@@ -22,8 +22,8 @@ get_ladder <- function(division, league, key) {
 
 BigO <- map(O_divs, get_ladder, league="REBBL - Big O", key)
 
-BigO[[4]] <- bind_rows(BigO[[4]] ,BigO[[6]]) %>% group_by(name) %>% summarise(tv = last(tv), race = first(race), logo = first(logo), name.1 = first(name.1), score = sum(score), id = first(id)) %>% arrange(desc(score))
-BigO[[5]] <- bind_rows(BigO[[5]] ,BigO[[7]]) %>% group_by(name) %>% summarise(tv = last(tv), race = first(race), logo = first(logo), name.1 = first(name.1), score = sum(score), id = first(id)) %>% arrange(desc(score))
+BigO[[4]] <- bind_rows(BigO[[4]] ,BigO[[6]]) %>% group_by(name) %>% summarise(tv = last(tv), race_id = first(race_id), logo = first(logo), name.1 = first(name.1), score = sum(score), id = first(id)) %>% arrange(desc(score))
+BigO[[5]] <- bind_rows(BigO[[5]] ,BigO[[7]]) %>% group_by(name) %>% summarise(tv = last(tv), race_id = first(race_id), logo = first(logo), name.1 = first(name.1), score = sum(score), id = first(id)) %>% arrange(desc(score))
 
 BigO <- BigO[-c(6:7)] %>% set_names(paste0("D",c(1:3,paste0(4,LETTERS[1:2]))))
 
