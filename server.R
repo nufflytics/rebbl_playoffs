@@ -33,12 +33,7 @@ race_img <- function(race_id) {
   )
 }
 
-regions <- map_df(c("REBBL - Big O", "REBBL - Gman", "REBBL - REL"), 
-                  ~{
-                    teams <- api_teams(key, league = ., limit = 1000)
-                    data_frame(Team = teams$teams$team, Region = teams$meta$league$name %>% stringr::str_replace_all(c("REBBL - "="", "Big O"="BigO", "GMan"="Gman")))
-                    } 
-                    )
+regions <- read_csv("data/regions.csv")
 
 find_region<- function(team) {
   r = filter(regions, Team == team)

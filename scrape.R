@@ -37,6 +37,13 @@ REL <- REL %>% set_names(paste0("D",c(1:9,paste0(10,LETTERS[1:5]))))
 
 saveRDS(list(BigO=BigO, Gman=Gman, REL=REL), file = "data/ladders.rds")
 
+map_df(c("REBBL - Big O", "REBBL - Gman", "REBBL - REL"), 
+       ~{
+         teams <- api_teams(key, league = ., limit = 1000)
+         data_frame(Team = teams$teams$team, Region = teams$meta$league$name %>% stringr::str_replace_all(c("REBBL - "="", "Big O"="BigO", "GMan"="Gman")))
+       } 
+) %>% write_csv("data/regions.csv")
+
 # process_matches <- function(match) {
 #   data_frame(
 #     coach = match$opponents %>% map_chr(pluck,"coach","name"), 
