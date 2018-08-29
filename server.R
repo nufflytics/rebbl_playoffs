@@ -33,7 +33,7 @@ race_img <- function(race_id) {
   )
 }
 
-regions <- read_csv("data/regions.csv")
+regions <- read_csv("data/regions.csv", trim_ws = F)
 
 find_region<- function(team) {
   r = filter(regions, Team == team)
@@ -283,11 +283,11 @@ shinyServer(function(input, output, session) {
             ),
             matchup(
               l$REL$D3[1,],
-              l$Gman$D7[1,],
+              l$Gman$D8G[1,],
               match_result = ro64()[[7]]
             ),
             matchup(class = "mid",
-                    l$Gman$D4[2,],
+                    l$Gman$D4[1,],
                     l$REL$D6[1,],
                     match_result = ro64()[[8]]
             ),
