@@ -3,7 +3,7 @@ library(tidyverse)
 library(glue)
 
 race_img <- function(race_id) {
-  switch (race_id,
+  switch (as.character(race_id),
           "1"= "human.png",
           "2"= "dorf.png",
           "3"= "rats.png",
@@ -31,12 +31,17 @@ race_img <- function(race_id) {
   )
 }
 
-regions <- read_csv("data/S8_regions.csv")
+regions <- map_df(c("REBBL - Big O", "REBBL - Gman", "REBBL - REL"), 
+                  ~{
+                    teams <- api_teams(key, league = ., limit = 1000)
+                    data_frame(Team = teams$teams$team, Region = teams$meta$league$name %>% str_replace_all(c("REBBL - "="", "Big O"="BigO", "GMan"="Gman")))
+                    } 
+                    )
 
 find_region<- function(team) {
   r = filter(regions, Team == team)
   
-  if(nrow(r)==0) {return(NULL)}
+  if(nrow(r)!=1) {return(NULL)}
   
   r$Region
 }
@@ -50,7 +55,7 @@ team <- function(pos, team, winner = F, score = "", round = 0) {
   
   if(is.null(team)) {return(tags$li(class = glue("team team-{pos}"), HTML("&nbsp;")))}
   
-  a(href = glue("http://bb2leaguemanager.com/Leaderboard/team_detail.php?team_id={team$id}&community_id=10"),
+  a(href = glue("https://rebbl.net/rebbl/team/{team$id}"),
     target="_blank",
     "data-tooltip" = team$name,
     tags$li(
@@ -68,7 +73,7 @@ custom_team <- function(pos, name, img = NULL) {
   tags$li(
     class = glue("team team-{pos}"),
     img(src = img, height = 25),
-    span(class = "score", name)
+    span(name)
   )
 }
 
@@ -94,8 +99,10 @@ matchup <- function(team1 = NULL, team2=NULL, class = NULL, match_result = NULL)
   )
 }
 
+
 coach_list <- list(
   #top left
+  c("Gman1", "Bye"),
   c("SeanManTV","Chabxxu"),
   c("Miraskadu", "Hindi"),
   c("LazarusDigz", "Ravenpoe"),
@@ -104,6 +111,7 @@ coach_list <- list(
   c("Gdaynick","Hogstench"),
   c("liamcoulston","Puppi"),
   #bottom left
+  c("BigO1", "Bye"),
   c("Stoobings","Hipzter"),
   c("Djoolyurn","Ficction"),
   c("The_Red_Joker","JapeNZ"),
@@ -127,7 +135,8 @@ coach_list <- list(
   c("Manus Atra","UnseenWalker"),
   c("dsharpe356","Bleedinghippy"),
   c("Viajero","Fall"),
-  c("Luminous","Hoyleyboy")
+  c("Luminous","Hoyleyboy"),
+  c("REL1", "Bye")
 )
 
 
@@ -154,40 +163,40 @@ coach_list <- list(
   }
   
 shinyServer(function(input, output, session) {
-  
   playoff_data <- reactiveFileReader(1000*5, session, "data/playoff_contests.rds", readRDS)
   
+  ## Fill in data as playoffs commence
   ro64 <- reactive({
     map(coach_list, function(coaches) {keep(playoff_data(), ~(all(coaches %in% .$coach)))} )
   })
-  
+
   ro32_coaches <- reactive({list(
     #top left
-    c("Horney Cricket", winner(ro64()[[1]])),
-    c(winner(ro64()[[2]]), winner(ro64()[[3]])),
-    c(winner(ro64()[[4]]), winner(ro64()[[5]])),
-    c(winner(ro64()[[6]]), winner(ro64()[[7]])),
+    c(l$Gman$D1[1,]$name.1, winner(ro64()[[2]])),
+    c(winner(ro64()[[3]]), winner(ro64()[[4]])),
+    c(winner(ro64()[[5]]), winner(ro64()[[6]])),
+    c(winner(ro64()[[7]]), winner(ro64()[[8]])),
     #bottom left
-    c(winner(ro64()[[8]]), winner(ro64()[[9]])),
-    c(winner(ro64()[[10]]), winner(ro64()[[11]])),
-    c(winner(ro64()[[12]]), winner(ro64()[[13]])),
-    c(winner(ro64()[[14]]), "Gerbear"),
-    #top right
+    c(l$BigO$D1[1,]$name.1, winner(ro64()[[10]])),
+    c(winner(ro64()[[11]]), winner(ro64()[[12]])),
+    c(winner(ro64()[[13]]), winner(ro64()[[14]])),
     c(winner(ro64()[[15]]), winner(ro64()[[16]])),
+    #top right
     c(winner(ro64()[[17]]), winner(ro64()[[18]])),
     c(winner(ro64()[[19]]), winner(ro64()[[20]])),
     c(winner(ro64()[[21]]), winner(ro64()[[22]])),
+    c(winner(ro64()[[23]]), winner(ro64()[[24]])),
     #bottom right
-    c("PapaNasty", winner(ro64()[[23]])),
-    c(winner(ro64()[[24]]), winner(ro64()[[25]])),
-    c(winner(ro64()[[26]]), winner(ro64()[[27]])),
-    c(winner(ro64()[[28]]), winner(ro64()[[29]]))
+    c(winner(ro64()[[25]]), winner(ro64()[[26]])),
+    c(winner(ro64()[[27]]), winner(ro64()[[28]])),
+    c(winner(ro64()[[29]]), winner(ro64()[[30]])),
+    c(winner(ro64()[[31]]), l$REL$D1[1,]$name.1)
   )})
-  
+
   ro32 <- reactive({
     map(ro32_coaches(), function(coaches) {if(length(coaches) != 2) return(NULL) ;keep(playoff_data(), ~(all(coaches %in% .$coach)))} )
   })
-  
+
   ro16_coaches <- reactive({list(
     #top left
     c(winner(ro32()[[1]]), winner(ro32()[[2]])),
@@ -247,138 +256,128 @@ shinyServer(function(input, output, session) {
         div(
           class = "split split-one",
           div(
-            class = "round round-one",
-            div(class = "round-details", "Round 1", br(), span(class = "date", "Starts May 23")),
-            matchup(class = "blank"), # RELD1 Bye
+            class = "round round-one current",
+            div(class = "round-details", "Round 1", br(), span(class = "date", "Starts Oct 3")),
+            matchup(class = "blank"), # GmanD1 Bye
             matchup(
-              l$Gman$D3[1,],
-              l$REL$D6[2,],
-              match_result = ro64()[[1]]
-            ),
-            matchup(
-              l$BigO$D1[4,],
-              l$Gman$D6A[1,],
+              l$REL$D9[1,],
+              l$REL$D1[4,],
               match_result = ro64()[[2]]
             ),
-            tags$ul(class = "matchup",
-                    team("top", l$REL$D4[1,], winner = T, score = 2, round = 1),
-                    a(href = "http://www.bb2leaguemanager.com/Leaderboard/team_detail.php?team_id=1953913&community_id=10",
-                      target = "_blank",
-                      "data-tooltip" = "GADS Gobstoppers",
-                      tags$li(
-                        class =  "team team-bottom",
-                        img(src = "http://nufflytics.com/img/main/REL_s.png", height = 25),
-                        img(src = "img/gobbo.png", height = 25),
-                        "Ravenpoe",
-                        span(class = "score", "0")
-                      )
-                    )
+            matchup(
+              l$BigO$D1[2,],
+              l$REL$D10B[1,],
+              match_result = ro64()[[3]]
             ),
             matchup(
-              l$Gman$D3[3,],
-              l$REL$D1[5,],
+              l$Gman$D2[3,],
+              l$REL$D7[2,],
               match_result = ro64()[[4]]
             ),
             matchup(
               l$Gman$D2[1,],
-              l$REL$D9C[1,],
+              l$BigO$D4B[1,],
               match_result = ro64()[[5]]
             ),
             matchup(
-              l$BigO$D2[1,],
-              l$REL$D9E[1,],
+              l$REL$D2[3,],
+              l$Gman$D7[1,],
               match_result = ro64()[[6]]
             ),
+            matchup(
+              l$REL$D3[1,],
+              l$Gman$D7[1,],
+              match_result = ro64()[[7]]
+            ),
             matchup(class = "mid",
-                    l$BigO$D1[2,],
-                    l$Gman$D6B[1,],
-                    match_result = ro64()[[7]]
+                    l$Gman$D4[2,],
+                    l$REL$D6[1,],
+                    match_result = ro64()[[8]]
             ),
+            matchup(class = "blank"), #BigO1 Bye
             matchup(
-              l$REL$D2[3,],
-              l$REL$D3[2,],
-              match_result = ro64()[[8]]
-            ),
-            matchup(
-              l$BigO$D4B[1,],
-              l$REL$D1[3,],
-              match_result = ro64()[[9]]
-            ),
-            matchup(
-              l$REL$D5[2,],
-              l$BigO$D2[2,],
+              l$Gman$D6[2,],
+              l$REL$D4[1,],
               match_result = ro64()[[10]]
             ),
             matchup(
-              l$REL$D6[1,],
-              l$Gman$D4[2,],
+              l$REL$D1[3,],
+              l$Gman$D8C[1,],
               match_result = ro64()[[11]]
             ),
             matchup(
-              l$BigO$D1[3,],
-              l$Gman$D6C[1,],
+              l$REL$D3[2,],
+              l$REL$D10D[1,],
               match_result = ro64()[[12]]
             ),
-            matchup(
-              l$REL$D2[2,],
-              l$REL$D4[3,],
-              match_result = ro64()[[13]]
+            tags$ul(class = "matchup",
+              team("top", l$BigO$D2[1,]),
+              custom_team("bottom", "RAMPUP Winner")
             ),
             matchup(
-              l$BigO$D3[1,],
-              l$Gman$D5[2,],
+              l$BigO$D1[4,],
+              l$Gman$D6[1,],
               match_result = ro64()[[14]]
             ),
-            matchup(class = "blank") # GmanD1 Bye
+            matchup(
+              l$Gman$D1[2,],
+              l$REL$D10A[1,],
+              match_result = ro64()[[15]]
+            ),
+            matchup(
+              l$Gman$D3[2,],
+              l$REL$D6[2,],
+              match_result = ro64()[[16]]
+            )
           ),
           div(
             class = "round round-two",
-            div(class = "round-details", "Round 2", br(), span(class = "date", "Starts May 30")),
-            matchup(
-              l$REL$D1[1,],
-              team_details(winner(ro64()[[1]])),
+            div(class = "round-details", "Round 2", br(), span(class = "date", "Starts Oct 10")),
+            matchup(class = "current",
+              l$Gman$D1[1,],
+              team_details(winner(ro64()[[2]])),
               match_result = ro32()[[1]]
               
             ),
             matchup(
-              team_details(winner(ro64()[[2]])),
               team_details(winner(ro64()[[3]])),
+              team_details(winner(ro64()[[4]])),
               match_result = ro32()[[2]]
               ),
             matchup(
-              team_details(winner(ro64()[[4]])),
               team_details(winner(ro64()[[5]])),
+              team_details(winner(ro64()[[6]])),
               match_result = ro32()[[3]]
             ),
             matchup(class = "mid",
-                    team_details(winner(ro64()[[6]])),
                     team_details(winner(ro64()[[7]])),
+                    team_details(winner(ro64()[[8]])),
                     match_result = ro32()[[4]]
                     ),
-            matchup(
-              team_details(winner(ro64()[[8]])),
-              team_details(winner(ro64()[[9]])),
+            matchup(class = "current",
+              l$BigO$D1[1,],
+              team_details(winner(ro64()[[10]])),
               match_result = ro32()[[5]]
             ),
             matchup(
-              team_details(winner(ro64()[[10]])),
               team_details(winner(ro64()[[11]])),
+              team_details(winner(ro64()[[12]])),
               match_result = ro32()[[6]]
             ),
             matchup(
-              team_details(winner(ro64()[[12]])),
               team_details(winner(ro64()[[13]])),
+              team_details(winner(ro64()[[14]])),
               match_result = ro32()[[7]]
             ),
             matchup(
-              team_details(winner(ro64()[[14]])),
-              l$Gman$D1[1,],
+              team_details(winner(ro64()[[15]])),
+              team_details(winner(ro64()[[16]])),
               match_result = ro32()[[8]]
             )
           ),
           div(
             class = "round round-three",
-            div(class = "round-details", "Round 3", br(), span(class = "date", "Starts June 6")),
+            div(class = "round-details", "Round 3", br(), span(class = "date", "Starts Oct 17")),
             matchup(
               team_details(winner(ro32()[[1]])),
               team_details(winner(ro32()[[2]])),
@@ -402,7 +401,7 @@ shinyServer(function(input, output, session) {
           ),
           div(
             class = "round round-four",
-            div(class = "round-details", "Hype Video Round", br(), span(class = "date", "Starts June 13")),
+            div(class = "round-details", "Round 4", br(), span(class = "date", "Starts Oct 24")),
             matchup(class = "mid",
                     team_details(winner(ro16()[[1]])),
                     team_details(winner(ro16()[[2]])),
@@ -423,7 +422,7 @@ shinyServer(function(input, output, session) {
               class = "round-details",
               "Top Half SF",
               br(),
-              span(class = "date", "Starts June 20")
+              span(class = "date", "Starts Oct 31")
             ),
             matchup(class = "championship",
                      team_details(winner(ro8()[[1]])),
@@ -432,13 +431,13 @@ shinyServer(function(input, output, session) {
                     )
           ),
           div(
-            class = "final current",
+            class = "final",
             #icon("trophy"),
             div(
               class = "round-details",
               "Superbowl",
               br(),
-              span(class = "date", "June 28 17:00 UTC")
+              span(class = "date", "Starts Nov 7")
             ),
             matchup(class = "championship sb",
                      team_details(winner(sf()[[1]])),
@@ -452,7 +451,7 @@ shinyServer(function(input, output, session) {
               class = "round-details",
               "Bottom Half SF",
               br(),
-              span(class = "date", "Starts June 20")
+              span(class = "date", "Starts Oct 31")
             ),
             matchup(class = "championship",
                      team_details(winner(ro8()[[2]])),
@@ -465,7 +464,7 @@ shinyServer(function(input, output, session) {
           class = "split split-two",
           div(
             class = "round round-four",
-            div(class = "round-details", "Hype Video Round", br(), span(class = "date", "Starts June 13")),
+            div(class = "round-details", "Round 4", br(), span(class = "date", "Starts Oct 24")),
             matchup(class = "mid",
                     team_details(winner(ro16()[[5]])),
                     team_details(winner(ro16()[[6]])),
@@ -479,7 +478,7 @@ shinyServer(function(input, output, session) {
           ),
           div(
             class = "round round-three",
-            div(class = "round-details", "Round 3", br(), span(class = "date", "Starts June 6")),
+            div(class = "round-details", "Round 3", br(), span(class = "date", "Starts Oct 17")),
             matchup(
               team_details(winner(ro32()[[9]])),
               team_details(winner(ro32()[[10]])),
@@ -503,137 +502,125 @@ shinyServer(function(input, output, session) {
           ),
           div(
             class = "round round-two",
-            div(class = "round-details", "Round 2", br(), span(class = "date", "Starts May 30")),
-            matchup(
-              team_details(winner(ro64()[[15]])),
-              team_details(winner(ro64()[[16]])),
-              match_result = ro32()[[9]]
-            ),
+            div(class = "round-details", "Round 2", br(), span(class = "date", "Starts Oct 10")),
             matchup(
               team_details(winner(ro64()[[17]])),
               team_details(winner(ro64()[[18]])),
-              match_result = ro32()[[10]]
+              match_result = ro32()[[9]]
             ),
             matchup(
               team_details(winner(ro64()[[19]])),
               team_details(winner(ro64()[[20]])),
+              match_result = ro32()[[10]]
+            ),
+            matchup(
+              team_details(winner(ro64()[[21]])),
+              team_details(winner(ro64()[[22]])),
               match_result = ro32()[[11]]
               ),
             matchup(class = "mid",
-                    team_details(winner(ro64()[[21]])),
-                    team_details(winner(ro64()[[22]])),
+                    team_details(winner(ro64()[[23]])),
+                    team_details(winner(ro64()[[24]])),
                     match_result = ro32()[[12]]
                     ),
             matchup(
-              l$BigO$D1[1,],
-              team_details(winner(ro64()[[23]])),
+              team_details(winner(ro64()[[25]])),
+              team_details(winner(ro64()[[26]])),
               match_result = ro32()[[13]]
             ),
             matchup(
-              team_details(winner(ro64()[[24]])),
-              team_details(winner(ro64()[[25]])),
+              team_details(winner(ro64()[[27]])),
+              team_details(winner(ro64()[[28]])),
               match_result = ro32()[[14]]
             ),
             matchup(
-              team_details(winner(ro64()[[26]])),
-              team_details(winner(ro64()[[27]])),
+              team_details(winner(ro64()[[29]])),
+              team_details(winner(ro64()[[30]])),
               match_result = ro32()[[15]]
             ),
-            matchup(
-              team_details(winner(ro64()[[28]])),
-              team_details(winner(ro64()[[29]])),
+            matchup(class = "current",
+              team_details(winner(ro64()[[31]])),
+              l$REL$D1[1,],
               match_result = ro32()[[16]]
             )
           ),
           div(
-            class = "round round-one",
-            div(class = "round-details", "Round 1", br(), span(class = "date", "Starts May 23")),
+            class = "round round-one current",
+            div(class = "round-details", "Round 1", br(), span(class = "date", "Starts Oct 3")),
             matchup(
-              l$REL$D1[2,],
-              l$BigO$D4A[1,],
-              match_result = ro64()[[15]]
-            ),
-            matchup(
-              l$REL$D7[1,],
-              l$Gman$D3[2,],
-              match_result = ro64()[[16]]
-            ),
-            matchup(
-              l$Gman$D1[5,],
-              l$BigO$D2[3,],
+              l$Gman$D3[1,],
+              l$REL$D10C[1,],
               match_result = ro64()[[17]]
             ),
             matchup(
-              l$Gman$D5[1,],
-              l$REL$D7[2,],
+              l$REL$D2[2,],
+              l$Gman$D8B[1,],
               match_result = ro64()[[18]]
             ),
             matchup(
-              l$REL$D9D[1,],
-              l$Gman$D1[2,],
+              l$Gman$D1[3,],
+              l$REL$D10B[1,],
               match_result = ro64()[[19]]
             ),
             matchup(
+              l$BigO$D3[2,],
               l$REL$D4[2,],
-              l$Gman$D2[3,],
               match_result = ro64()[[20]]
             ),
             matchup(
-              l$BigO$D1[5,],
-              l$REL$D3[3,],
+              l$REL$D1[2,],
+              l$Gman$D8A[1,],
               match_result = ro64()[[21]]
             ),
-            tags$ul(class ="matchup mid",
-                    team("top", l$REL$D5[1,], score = 2),
-                    #custom_team("bottom", "Minors Champion")
-                    a(href = "https://cdn.discordapp.com/attachments/446844052302987284/446844075136778251/unknown.png",
-                      target = "_blank",
-                      "data-tooltip" = "Street Sharkss",
-                      tags$li(
-                        class =  "team team-bottom",
-                        img(src = "http://nufflytics.com/img/main/REBBL_fist_mod.png", height = 25),
-                        img(src = "img/liz.png", height = 25),
-                        "Shadorra",
-                        span(class = "score", "1")
-                      )
-                    )
-            ),
-            matchup(class = "blank"), # BigOD1 Bye
-            matchup(
-              l$REL$D3[1,],
-              l$BigO$D3[2,],
-              match_result = ro64()[[23]]
+            tags$ul(class = "matchup",
+                    team("top", l$Gman$D5[1,]),
+                    custom_team("bottom", "Stunty Champion")
             ),
             matchup(
               l$Gman$D1[4,],
-              l$REL$D9A[1,],
-              match_result = ro64()[[24]]
+              l$REL$D8[1,],
+              match_result = ro64()[[23]]
+            ),
+            tags$ul(class = "matchup mid",
+                    team("top", l$BigO$D4A[1,]),
+                    custom_team("bottom", "Minors Champion")
             ),
             matchup(
               l$REL$D2[1,],
-              l$Gman$D6D[1,],
+              l$Gman$D8E[1,],
               match_result = ro64()[[25]]
             ),
             matchup(
-              l$Gman$D1[3,],
-              l$REL$D9B[1,],
+              l$BigO$D2[3,],
+              l$Gman$D5[2,],
               match_result = ro64()[[26]]
             ),
             matchup(
-              l$REL$D8[2,],
-              l$Gman$D2[2,],
+              l$BigO$D3[1,],
+              l$Gman$D8D[1,],
               match_result = ro64()[[27]]
             ),
             matchup(
-              l$Gman$D4[1,],
-              l$REL$D8[1,],
+              l$REL$D5[1,],
+              l$Gman$D4[2,],
               match_result = ro64()[[28]]
             ),
             matchup(
-              l$REL$D1[4,],
-              l$Gman$D6E[1,],
+              l$BigO$D1[3,],
+              l$Gman$D8F[1,],
               match_result = ro64()[[29]]
-            )
+            ),
+            matchup(
+              l$REL$D5[2,],
+              l$Gman$D2[2,],
+              match_result = ro64()[[30]]
+            ),
+            matchup(
+              l$BigO$D2[2,],
+              l$REL$D7[1,],
+              match_result = ro64()[[31]]
+            ),
+            matchup(class = "blank") #REL1 Bye
             
           )
         )
