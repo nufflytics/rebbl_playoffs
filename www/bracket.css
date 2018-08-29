@@ -426,6 +426,6 @@ li.team.winner {
 
 #bracket-holder {
   background: url("http://www.nufflytics.com/img/main/REBBL.png") no-repeat;
-  background-position-y:  center;
+  background-position:  center;
   background-size: contain;
 }
