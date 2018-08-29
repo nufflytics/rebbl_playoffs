@@ -1,5 +1,6 @@
 library(shiny)
 library(tidyverse)
+library(nufflytics)
 library(glue)
 
 race_img <- function(race_id) {
