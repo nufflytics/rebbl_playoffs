@@ -2,6 +2,7 @@ library(shiny)
 library(tidyverse)
 library(nufflytics)
 library(glue)
+key <- readRDS("data/api.key")
 
 race_img <- function(race_id) {
   switch (as.character(race_id),
