@@ -432,7 +432,7 @@ shinyServer(function(input, output, session) {
             #icon("trophy"),
             div(
               class = "round-details",
-              "Superbowl",
+              "Magnum Cup",
               br(),
               span(class = "date", "Starts Nov 7")
             ),
