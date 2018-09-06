@@ -556,7 +556,7 @@ shinyServer(function(input, output, session) {
             ),
             matchup(
               l$Gman$D1[3,],
-              l$REL$D10B[1,],
+              l$REL$D10E[1,],
               match_result = ro64()[[19]]
             ),
             matchup(
