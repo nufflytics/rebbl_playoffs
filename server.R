@@ -40,7 +40,13 @@ find_region<- function(team) {
   
   if(nrow(r)!=1) {return(NULL)}
   
-  r$Region
+  reg = case_when(
+    r$Region %in% c("REL", "Gman", "BigO") ~ str_c(r$Region, "_s"),
+    r$Region == "REBBL" ~ "REBBL_fist_mod",
+    r$Region == "Rookies" ~ "rebbrl"
+  )
+  
+  reg
 }
 
 team <- function(pos, team, winner = F, score = "", round = 0) {
@@ -48,7 +54,7 @@ team <- function(pos, team, winner = F, score = "", round = 0) {
     winner  = F
   }
   
-  spoiler = F
+  spoiler = round > 0
   
   if(is.null(team)) {return(tags$li(class = glue("team team-{pos}"), HTML("&nbsp;")))}
   
@@ -57,7 +63,7 @@ team <- function(pos, team, winner = F, score = "", round = 0) {
     "data-tooltip" = team$name,
     tags$li(
       class =  glue("team team-{pos}{ifelse(winner, ' winner', '')} {ifelse(spoiler, ' spoiler_bg no_col','')}"),
-      img(src = glue("http://nufflytics.com/img/main/{find_region(team$name)}_s.png"), height = 25),
+      img(src = glue("https://nufflytics.com/img/main/{find_region(team$name)}.png"), height = 25),
       img(src = glue("img/{race_img(team$race_id)}"), height = 25),
       #img(src = glue("http://images.bb2.cyanide-studio.com/logos/Logo_{team$logo}.png"), height = 25),
       team$name.1,
@@ -100,39 +106,39 @@ matchup <- function(team1 = NULL, team2=NULL, class = NULL, match_result = NULL)
 coach_list <- list(
   #top left
   c("Gman1", "Bye"),
-  c("SeanManTV","Chabxxu"),
-  c("Miraskadu", "Hindi"),
-  c("LazarusDigz", "Ravenpoe"),
-  c("Steave","Superfedtv"),
-  c("Creatan","Dick_Delaware"),
-  c("Gdaynick","Hogstench"),
-  c("liamcoulston","Puppi"),
+  c("Steer","Stoobings"),
+  c("JapeNZ", "wedge22"),
+  c("Zsinj", "Cakengrad"),
+  c("randomboy987","kaverne"),
+  c("Thessa","BlissfulFire"),
+  c("Stouticus","TheDrNick"),
+  c("Muppetillo","Mistah J"),
   #bottom left
   c("BigO1", "Bye"),
-  c("Stoobings","Hipzter"),
-  c("Djoolyurn","Ficction"),
-  c("The_Red_Joker","JapeNZ"),
-  c("Spoonybard","Tyladrhas"),
-  c("Findeco","Kejiruze"),
-  c("Gengar","Monaker"),
-  c("Werecaster","Rama Set"),
+  c("Mixtli","Holes"),
+  c("Saace","Scytalen"),
+  c("Chabxxu","VulpesInculta"),
+  c("Werecaster","Teddy Rose"),
+  c("Sandune","Mego"),
+  c("SeanManTV","Hairy Coo"),
+  c("Weravem","Mystaes"),
   #top right
-  c("Waeve","Morka"),
-  c("AGrain","AndyDavo"),
-  c("FullMetalCOS","HirumaMajere"),
-  c("Aldar","Stouticus"),
-  c("Jeoff7733","the Sage"),
-  c("Thessa","InfinitePink"),
-  c("schlice","Regnen"),
-  c("Uber The Noober","Shadorra"),
+  c("Kummostern","Razzle Storm"),
+  c("michaels","HLiNiC"),
+  c("the Sage","Larkstar"),
+  c("Djoolyurn","Jimmy Burrito"),
+  c("LazarusDigz","Kubusta"),
+  c("Bärserk","Chubberson"),
+  c("Gaudi","Khalerick"),
+  c("AnteaterReborn","GemeneRick"),
   #bottom right
-  c("SoulOfDragnFire","JamusMcgamuS"),
-  c("Gaudi","Larkstar"),
-  c("Motleee","BufordTJustice"),
-  c("Manus Atra","UnseenWalker"),
-  c("dsharpe356","Bleedinghippy"),
-  c("Viajero","Fall"),
-  c("Luminous","Hoyleyboy"),
+  c("ArchXL","AndyDavo"),
+  c("Lynxx","Harringzord"),
+  c("Morka","toastguy7"),
+  c("McMacky","Ramhard"),
+  c("PapaNasty","AndY90"),
+  c("C_Arnoud","Barmution"),
+  c("Tommo","tommytootall"),
   c("REL1", "Bye")
 )
 
@@ -257,7 +263,7 @@ shinyServer(function(input, output, session) {
             div(class = "round-details", "Round 1", br(), span(class = "date", "Starts Oct 3")),
             matchup(class = "blank"), # GmanD1 Bye
             matchup(
-              l$REL$D9[1,],
+              l$REL$D9[2,],
               l$REL$D1[4,],
               match_result = ro64()[[2]]
             ),
@@ -268,7 +274,7 @@ shinyServer(function(input, output, session) {
             ),
             matchup(
               l$Gman$D2[3,],
-              l$REL$D7[2,],
+              l$REL$D7[3,],
               match_result = ro64()[[4]]
             ),
             matchup(
@@ -309,7 +315,7 @@ shinyServer(function(input, output, session) {
             ),
             tags$ul(class = "matchup",
               team("top", l$BigO$D2[1,]),
-              custom_team("bottom", "RAMPUP Winner")
+              team("bottom", list(id = 2309956, name = "Snake Kittens", race_id = 5, logo = "Lizardman_18", name.1 = "Teddy Rose"))
             ),
             matchup(
               l$BigO$D1[4,],
@@ -318,7 +324,7 @@ shinyServer(function(input, output, session) {
             ),
             matchup(
               l$Gman$D1[2,],
-              l$REL$D10A[1,],
+              l$REL$D10A[2,],
               match_result = ro64()[[15]]
             ),
             matchup(
@@ -328,7 +334,7 @@ shinyServer(function(input, output, session) {
             )
           ),
           div(
-            class = "round round-two",
+            class = "round round-two spoiler hidden",
             div(class = "round-details", "Round 2", br(), span(class = "date", "Starts Oct 10")),
             matchup(class = "current",
               l$Gman$D1[1,],
@@ -498,7 +504,7 @@ shinyServer(function(input, output, session) {
             )
           ),
           div(
-            class = "round round-two",
+            class = "round round-two spoiler hidden",
             div(class = "round-details", "Round 2", br(), span(class = "date", "Starts Oct 10")),
             matchup(
               team_details(winner(ro64()[[17]])),
@@ -571,7 +577,7 @@ shinyServer(function(input, output, session) {
             ),
             tags$ul(class = "matchup",
                     team("top", l$Gman$D5[1,]),
-                    custom_team("bottom", "Stunty Champion")
+                    team("bottom", list(id = 2289176, name = "The Way of the Leaf", race_id = 11, logo = "Halfling_08", name.1 = "Chubberson"))
             ),
             matchup(
               l$Gman$D1[4,],
@@ -580,7 +586,7 @@ shinyServer(function(input, output, session) {
             ),
             tags$ul(class = "matchup mid",
                     team("top", l$BigO$D4A[1,]),
-                    custom_team("bottom", "Minors Champion")
+                    team("bottom", list(id = 1988441, name = "The Lizzardblizzard", race_id = 15, logo = "Lizardman_09", name.1 = "GemeneRick"))
             ),
             matchup(
               l$REL$D2[1,],
