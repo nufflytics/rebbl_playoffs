@@ -41,7 +41,7 @@ find_region<- function(team) {
   if(nrow(r)!=1) {return(NULL)}
   
   reg = case_when(
-    r$Region %in% c("REL", "Gman", "BigO") ~ str_c(r$Region, "_s"),
+    r$Region %in% c("REL", "Gman", "BigO") ~ glue::glue("{r$Region}_s"),
     r$Region == "REBBL" ~ "REBBL_fist_mod",
     r$Region == "Rookies" ~ "rebbrl"
   )
