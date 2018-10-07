@@ -124,7 +124,7 @@ coach_list <- list(
   c("Weravem","Mystaes"),
   #top right
   c("Kummostern","Razzle Storm"),
-  c("michaels","HLiNiC"),
+  c("michaels","Sandland"),
   c("the Sage","Larkstar"),
   c("Djoolyurn","Jimmy Burrito"),
   c("LazarusDigz","Kubusta"),
@@ -557,7 +557,7 @@ shinyServer(function(input, output, session) {
             ),
             matchup(
               l$REL$D2[2,],
-              l$Gman$D8B[1,],
+              l$Gman$D8B[2,],
               match_result = ro64()[[18]]
             ),
             matchup(
@@ -590,7 +590,7 @@ shinyServer(function(input, output, session) {
             ),
             matchup(
               l$REL$D2[1,],
-              l$Gman$D8E[1,],
+              l$Gman$D8E[2,],
               match_result = ro64()[[25]]
             ),
             matchup(
