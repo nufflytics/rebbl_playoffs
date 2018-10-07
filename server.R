@@ -314,8 +314,8 @@ shinyServer(function(input, output, session) {
               match_result = ro64()[[12]]
             ),
             tags$ul(class = "matchup",
-              team("top", l$BigO$D2[1,]),
-              team("bottom", list(id = 2309956, name = "Snake Kittens", race_id = 5, logo = "Lizardman_18", name.1 = "Teddy Rose"))
+              team("top", l$BigO$D2[1,], winner = F, score = 1, round = 1),
+              team("bottom", list(id = 2309956, name = "Snake Kittens", race_id = 5, logo = "Lizardman_18", name.1 = "Teddy Rose"), winner = T, score = 2, round = 1)
             ),
             matchup(
               l$BigO$D1[4,],
@@ -336,7 +336,7 @@ shinyServer(function(input, output, session) {
           div(
             class = "round round-two spoiler hidden",
             div(class = "round-details", "Round 2", br(), span(class = "date", "Starts Oct 10")),
-            matchup(class = "current",
+            matchup(
               l$Gman$D1[1,],
               team_details(winner(ro64()[[2]])),
               match_result = ro32()[[1]]
@@ -357,7 +357,7 @@ shinyServer(function(input, output, session) {
                     team_details(winner(ro64()[[8]])),
                     match_result = ro32()[[4]]
                     ),
-            matchup(class = "current",
+            matchup(
               l$BigO$D1[1,],
               team_details(winner(ro64()[[10]])),
               match_result = ro32()[[5]]
@@ -541,7 +541,7 @@ shinyServer(function(input, output, session) {
               team_details(winner(ro64()[[30]])),
               match_result = ro32()[[15]]
             ),
-            matchup(class = "current",
+            matchup(
               team_details(winner(ro64()[[31]])),
               l$REL$D1[1,],
               match_result = ro32()[[16]]
@@ -576,8 +576,8 @@ shinyServer(function(input, output, session) {
               match_result = ro64()[[21]]
             ),
             tags$ul(class = "matchup",
-                    team("top", l$Gman$D5[1,]),
-                    team("bottom", list(id = 2289176, name = "The Way of the Leaf", race_id = 11, logo = "Halfling_08", name.1 = "Chubberson"))
+                    team("top", l$Gman$D5[1,], winner = T, score = 1, round = 1),
+                    team("bottom", list(id = 2289176, name = "The Way of the Leaf", race_id = 11, logo = "Halfling_08", name.1 = "Chubberson"), winner = F, score = 0, round = 1)
             ),
             matchup(
               l$Gman$D1[4,],
@@ -585,12 +585,12 @@ shinyServer(function(input, output, session) {
               match_result = ro64()[[23]]
             ),
             tags$ul(class = "matchup mid",
-                    team("top", l$BigO$D4A[1,]),
-                    team("bottom", list(id = 1988441, name = "The Lizzardblizzard", race_id = 15, logo = "Lizardman_09", name.1 = "GemeneRick"))
+                    team("top", l$BigO$D4A[1,], winner = T, score = 3, round = 1),
+                    team("bottom", list(id = 1988441, name = "The Lizzardblizzard", race_id = 15, logo = "Lizardman_09", name.1 = "GemeneRick"), winner = F, score = 2, round = 1)
             ),
             matchup(
               l$REL$D2[1,],
-              l$Gman$D8E[2,],
+              l$Gman$D8E[1,],
               match_result = ro64()[[25]]
             ),
             matchup(
