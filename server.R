@@ -54,7 +54,7 @@ team <- function(pos, team, winner = F, score = "", round = 0) {
     winner  = F
   }
   
-  spoiler = round > 0
+  spoiler = round > 1
   
   if(is.null(team)) {return(tags$li(class = glue("team team-{pos}"), HTML("&nbsp;")))}
   
@@ -259,7 +259,7 @@ shinyServer(function(input, output, session) {
         div(
           class = "split split-one",
           div(
-            class = "round round-one current",
+            class = "round round-one ",
             div(class = "round-details", "Round 1", br(), span(class = "date", "Starts Oct 3")),
             matchup(class = "blank"), # GmanD1 Bye
             matchup(
@@ -334,7 +334,7 @@ shinyServer(function(input, output, session) {
             )
           ),
           div(
-            class = "round round-two spoiler hidden",
+            class = "round round-two current ",
             div(class = "round-details", "Round 2", br(), span(class = "date", "Starts Oct 10")),
             matchup(
               l$Gman$D1[1,],
@@ -379,7 +379,7 @@ shinyServer(function(input, output, session) {
             )
           ),
           div(
-            class = "round round-three",
+            class = "round round-three spoiler hidden",
             div(class = "round-details", "Round 3", br(), span(class = "date", "Starts Oct 17")),
             matchup(
               team_details(winner(ro32()[[1]])),
@@ -480,7 +480,7 @@ shinyServer(function(input, output, session) {
             )
           ),
           div(
-            class = "round round-three",
+            class = "round round-three spoiler hidden",
             div(class = "round-details", "Round 3", br(), span(class = "date", "Starts Oct 17")),
             matchup(
               team_details(winner(ro32()[[9]])),
@@ -504,7 +504,7 @@ shinyServer(function(input, output, session) {
             )
           ),
           div(
-            class = "round round-two spoiler hidden",
+            class = "round round-two current",
             div(class = "round-details", "Round 2", br(), span(class = "date", "Starts Oct 10")),
             matchup(
               team_details(winner(ro64()[[17]])),
@@ -548,7 +548,7 @@ shinyServer(function(input, output, session) {
             )
           ),
           div(
-            class = "round round-one current",
+            class = "round round-one",
             div(class = "round-details", "Round 1", br(), span(class = "date", "Starts Oct 3")),
             matchup(
               l$Gman$D3[1,],
