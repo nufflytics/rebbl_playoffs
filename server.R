@@ -336,12 +336,17 @@ shinyServer(function(input, output, session) {
           div(
             class = "round round-two current ",
             div(class = "round-details", "Round 2", br(), span(class = "date", "Starts Oct 10")),
-            matchup(
-              l$Gman$D1[1,],
-              team_details(winner(ro64()[[2]])),
-              match_result = ro32()[[1]]
-              
-            ),
+            # matchup(
+            #   l$Gman$D1[1,],
+            #   team_details(winner(ro64()[[2]])),
+            #   match_result = ro32()[[1]]
+            #   
+            # )
+            tags$ul(class = "matchup",
+                    team("top", l$Gman$D1[1,], winner = T, score = 2, round = 2),
+                    team("bottom", l$REL$D1[4,], winner = F, score = 1, round = 2)
+            )
+            ,
             matchup(
               team_details(winner(ro64()[[3]])),
               team_details(winner(ro64()[[4]])),
@@ -382,7 +387,7 @@ shinyServer(function(input, output, session) {
             class = "round round-three spoiler hidden",
             div(class = "round-details", "Round 3", br(), span(class = "date", "Starts Oct 17")),
             matchup(
-              team_details(winner(ro32()[[1]])),
+              l$Gman$D1[1,],
               team_details(winner(ro32()[[2]])),
               match_result = ro16()[[1]]
             ),
