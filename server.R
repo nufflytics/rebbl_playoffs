@@ -202,7 +202,7 @@ shinyServer(function(input, output, session) {
 
   ro16_coaches <- reactive({list(
     #top left
-    c(winner(ro32()[[1]]), winner(ro32()[[2]])),
+    c("Bleedinghippy", winner(ro32()[[2]])),
     c(winner(ro32()[[3]]), winner(ro32()[[4]])),
     #bottom left
     c(winner(ro32()[[5]]), winner(ro32()[[6]])),
