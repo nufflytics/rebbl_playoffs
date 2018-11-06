@@ -54,7 +54,7 @@ team <- function(pos, team, winner = F, score = "", round = 0) {
     winner  = F
   }
   
-  spoiler = round > 4
+  spoiler = round > 3
   
   if(is.null(team)) {return(tags$li(class = glue("team team-{pos}"), HTML("&nbsp;")))}
   
@@ -244,7 +244,8 @@ shinyServer(function(input, output, session) {
   })
 
   sb_coaches <- reactive({list(
-    c(winner(sf()[[1]]), winner(sf()[[2]]))
+    #c(winner(sf()[[1]]), winner(sf()[[2]]))
+    c(winner(sf()[[1]]), "Mystaes")
   )})
 
   sb <- reactive({
@@ -436,14 +437,14 @@ shinyServer(function(input, output, session) {
             class = "final",
             #icon("trophy"),
             div(
-              class = "round-details hidden spoiler",
+              class = "round-details ",
               "Magnum Cup",
               br(),
               span(class = "date", "Starts Nov 7")
             ),
-            matchup(class = "championship sb",
+            matchup(class = "championship sb hidden spoiler",
                      team_details(winner(sf()[[1]])),
-                     team_details(winner(sf()[[2]])),
+                     team_details("Mystaes"), #team_details(winner(sf()[[2]])),
                      match_result = sb()[[1]]
                     )
           ),
@@ -456,9 +457,9 @@ shinyServer(function(input, output, session) {
               span(class = "date", "Starts Oct 31")
             ),
             matchup(class = "championship",
-                     team_details(winner(ro8()[[2]])),
-                     team_details(winner(ro8()[[4]])),
-                     match_result = sf()[[2]]
+                     l$REL$D6[2,],
+                     l$Gman$D8E[1,],
+                     list(data_frame(coach = c("Mystaes", "AndyDavo"), team = c("The Elements of Style", "Deadly Nightshade"), score = c(3,2), round = c(4,4)))  
                     )
           )
         ),
