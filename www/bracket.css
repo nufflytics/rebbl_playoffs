@@ -234,7 +234,7 @@ body {
 .champion li, .round li {
   background-color: #fff;
   box-shadow: none; 
-  opacity: 0.45;
+  opacity: 0.6;
   
 }
 .current li {
@@ -277,7 +277,7 @@ body {
 }
 
 .blank {
-  opacity: 0.45;
+  opacity: 0.6;
 }
 
 li.team.winner {
